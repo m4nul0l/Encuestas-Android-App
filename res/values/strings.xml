@@ -4,5 +4,6 @@
     <string name="app_name">Encuestas</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="comenzar_encuesta">Presione la pantalla para comenzar la encuesta</string>
 
 </resources>
