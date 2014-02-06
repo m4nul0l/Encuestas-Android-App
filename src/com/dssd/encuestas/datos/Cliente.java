@@ -5,6 +5,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName="clientes")
 public class Cliente {
-	@DatabaseField(id=true)
+	@DatabaseField(generatedId=true)
 	long _id;
 }

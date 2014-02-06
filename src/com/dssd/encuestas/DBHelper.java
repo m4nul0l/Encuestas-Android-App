@@ -11,6 +11,7 @@ import com.dssd.encuestas.datos.Encuestado;
 import com.dssd.encuestas.datos.Pregunta;
 import com.dssd.encuestas.datos.Respuesta;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -31,6 +32,27 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(cs, Pregunta.class);
 			TableUtils.createTable(cs, Encuestado.class);
 			TableUtils.createTable(cs, Respuesta.class);
+			
+			/* Encuesta de prueba */
+			Encuesta e1 = new Encuesta();
+			Dao<Encuesta, Long> encuestas = getDao(Encuesta.class);
+			encuestas.create(e1);
+			
+			/* Preguntas de prueba */
+			Dao<Pregunta, Long> preguntas = getDao(Pregunta.class);
+			
+			Pregunta p1 = new Pregunta();
+			p1.setEncuesta(e1);
+			p1.setPregunta("¿Conoce nuestro producto?");
+			p1.setTipo("si-no");
+			preguntas.create(p1);
+			
+			Pregunta p2 = new Pregunta();
+			p2.setEncuesta(e1);
+			p2.setPregunta("¿Le gusta nuestro producto?");
+			p2.setTipo("caritas");
+			preguntas.create(p2);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName="encuestas")
 public class Encuesta {
-	@DatabaseField(id=true)
+	@DatabaseField(generatedId=true)
 	private long _id;
 	
 	@DatabaseField
