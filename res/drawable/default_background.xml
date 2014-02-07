@@ -2,6 +2,6 @@
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
     android:src="@drawable/android_backgrounds"
     android:filter="true"
-    android:gravity="fill_vertical|clip_horizontal">
+    android:gravity="fill">
 
 </bitmap>

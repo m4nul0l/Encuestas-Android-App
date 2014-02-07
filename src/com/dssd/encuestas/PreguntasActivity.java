@@ -3,7 +3,9 @@ package com.dssd.encuestas;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.Pregunta;
+import com.dssd.encuestas.datos.Respuesta;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -16,27 +18,34 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 
 public class PreguntasActivity extends FragmentActivity {
+	
+	Pregunta[] preguntas;
+	int preguntaActual = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preguntas);
 		
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		initPreguntas();
+		mostrarSiguientePregunta();
+	}
+	
+	public void initPreguntas() {
+		Encuesta encuesta = null;
 		
-		PreguntaFragment fragment = new PreguntaFragment();
-		Pregunta p = getPregunta();
-		if(p != null)
-			fragment.setPregunta(p);
-		
-		fragmentTransaction.add(R.id.preguntasMainLayout, fragment);
-		fragmentTransaction.commit();
-		
-//		TextView textViewPregunta = (TextView) findViewById(R.id.textViewPregunta);
-//		
-//		if(textViewPregunta != null && p.getPregunta() != null)
-//			textViewPregunta.setText(p.getPregunta());
+		DBHelper dbHelper = OpenHelperManager.getHelper(this, DBHelper.class);
+		try {
+			Dao<Encuesta, Long> dao = dbHelper.getDao(Encuesta.class);
+			encuesta = dao.queryForId(1L);
+			
+			preguntas = encuesta.getPreguntasArray();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		OpenHelperManager.releaseHelper();
 	}
 	
 	public Pregunta getPregunta() {
@@ -91,5 +100,51 @@ public class PreguntasActivity extends FragmentActivity {
 				}
 			});
 		builder.show();
+	}
+	
+	public Pregunta getSiguientePregunta() {
+		Pregunta pregunta = null;
+		
+		if((preguntaActual+1) < preguntas.length) {
+			pregunta = preguntas[++preguntaActual];
+		}
+		
+		return pregunta;
+	}
+	
+	public void mostrarSiguientePregunta() {
+		Pregunta p = getSiguientePregunta();
+		
+		if(p != null) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			
+			PreguntaFragment fragment;
+			
+			if(p.getTipo().compareTo("si-no") == 0) {
+				fragment = new PreguntaSiNoFragment();
+			} else {
+				fragment = new PreguntaFragment();
+			}
+			
+			fragment.setPregunta(p);
+			
+			//if(preguntaActual == 0) {
+			//	fragmentTransaction.add(R.id.preguntasMainLayout, fragment);
+			//} else {
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				fragmentTransaction.replace(R.id.preguntasMainLayout, fragment);
+				fragmentTransaction.addToBackStack(null);
+			//}
+			fragmentTransaction.commit();
+		} else {
+			// no hay mas preguntas
+			finish();
+		}
+	}
+	
+	public void responderPregunta(Respuesta respuesta) {
+		mostrarSiguientePregunta();
 	}
 }

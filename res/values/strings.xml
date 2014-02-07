@@ -8,4 +8,7 @@
     <string name="title_activity_preguntas">PreguntasActivity</string>
     <string name="cerrar_preguntas_esta_seguro">¿Está seguro que desea cancelar la encuesta?</string>
 
+    <string name="si">Sí</string>
+    <string name="no">No</string>
+    
 </resources>

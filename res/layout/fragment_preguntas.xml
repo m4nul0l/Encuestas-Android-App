@@ -5,25 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".PreguntasActivity" >
 
+    <FrameLayout
+        android:id="@+id/frameLayoutOpciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp" >
+    </FrameLayout>
+
     <TextView
         android:id="@+id/textViewPregunta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:text="prueba"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutOpciones"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp" >
-
-    </LinearLayout>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="@dimen/activity_text_size" />
 
 </RelativeLayout>
