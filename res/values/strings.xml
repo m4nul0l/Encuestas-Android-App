@@ -7,8 +7,9 @@
     <string name="comenzar_encuesta">Presione la pantalla para comenzar la encuesta</string>
     <string name="title_activity_preguntas">PreguntasActivity</string>
     <string name="cerrar_preguntas_esta_seguro">¿Está seguro que desea cancelar la encuesta?</string>
-
     <string name="si">Sí</string>
     <string name="no">No</string>
-    
+    <string name="title_activity_fin">FinActivity</string>
+    <string name="terminar_encuesta">Gracias por completar la encuesta.</string>
+
 </resources>

@@ -12,6 +12,7 @@ import com.j256.ormlite.dao.Dao;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -123,6 +124,12 @@ public class PreguntasActivity extends FragmentActivity {
 			
 			if(p.getTipo().compareTo("si-no") == 0) {
 				fragment = new PreguntaSiNoFragment();
+			}
+			else if(p.getTipo().compareTo("valores") == 0) {
+					fragment = new PreguntaValoresFragment();
+					Bundle b = new Bundle();
+					b.putStringArray("valores", new String[] {"1", "2", "3", "4", "5"});
+					fragment.setArguments(b);
 			} else {
 				fragment = new PreguntaFragment();
 			}
@@ -140,6 +147,7 @@ public class PreguntasActivity extends FragmentActivity {
 			fragmentTransaction.commit();
 		} else {
 			// no hay mas preguntas
+			startActivity(new Intent(this, FinActivity.class));
 			finish();
 		}
 	}

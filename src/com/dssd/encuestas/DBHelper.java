@@ -50,7 +50,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 			Pregunta p2 = new Pregunta();
 			p2.setEncuesta(e1);
 			p2.setPregunta("¿Le gusta nuestro producto?");
-			p2.setTipo("caritas");
+			p2.setTipo("valores");
 			preguntas.create(p2);
 			
 		} catch (SQLException e) {

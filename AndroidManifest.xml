@@ -27,6 +27,10 @@
             android:name="com.dssd.encuestas.PreguntasActivity"
             android:label="@string/title_activity_preguntas" >
         </activity>
+        <activity
+            android:name="com.dssd.encuestas.FinActivity"
+            android:label="@string/title_activity_fin" >
+        </activity>
     </application>
 
 </manifest>
