@@ -25,11 +25,13 @@
         </activity>
         <activity
             android:name="com.dssd.encuestas.PreguntasActivity"
-            android:label="@string/title_activity_preguntas" >
+            android:label="@string/title_activity_preguntas"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.dssd.encuestas.FinActivity"
-            android:label="@string/title_activity_fin" >
+            android:label="@string/title_activity_fin"
+            android:screenOrientation="landscape" >
         </activity>
     </application>
 
