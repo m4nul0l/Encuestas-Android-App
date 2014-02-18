@@ -12,6 +12,7 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
@@ -33,6 +34,12 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 			ContentProviderClient provider, SyncResult syncResult) {
 		// TODO Auto-generated method stub
 		
+		System.out.println("encuestas: onPerformSync");
+		deviceAuth();
+		deviceAuth();
+	}
+
+	private void deviceAuth() {
 		try {
 			URL u = new URL("http://sdecima.kd.io/encuestas/services/device/auth");
 			InputStream openStream = u.openStream();
@@ -44,7 +51,9 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 		    String str = s.hasNext() ? s.next() : "";
 		    s.close();
 		    
-        	Toast.makeText(getContext(), str, Toast.LENGTH_LONG).show();
+		    Log.v("loyalmaker", str);
+		    
+        	//Toast.makeText(getContext(), str, Toast.LENGTH_LONG).show();
 		    
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -54,5 +63,4 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 			e.printStackTrace();
 		}
 	}
-
 }

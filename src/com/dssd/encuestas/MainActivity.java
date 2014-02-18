@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
 	
 	
 	
-	public static final String AUTHORITY = "com.example.android.datasync.provider";
+	public static final String AUTHORITY = "com.loyalmaker.datasync.provider";
     public static final String ACCOUNT_TYPE = "loyalmaker.com";
     public static final String ACCOUNT = "dummyaccount";
     Account mAccount;	
