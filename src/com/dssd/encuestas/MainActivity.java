@@ -1,5 +1,7 @@
 package com.dssd.encuestas;
 
+import com.dssd.encuestas.info.DeviceInfoHelper;
+
 import android.os.Bundle;
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -7,6 +9,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
@@ -16,8 +19,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		testSync();
 	}
 
 	@Override
@@ -26,6 +27,22 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case R.id.action_force_sync:
+			String xml = DeviceInfoHelper.getInstance(this).getDeviceInfoXML();
+			System.out.println(xml);
+			//testSync();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

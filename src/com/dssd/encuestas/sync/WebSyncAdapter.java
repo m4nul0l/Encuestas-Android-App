@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -32,16 +31,17 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 	@Override
 	public void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
-		// TODO Auto-generated method stub
 		
+		
+		// TODO PONER proceso :sync en manifiesto!
 		System.out.println("encuestas: onPerformSync");
 		deviceAuth();
-		deviceAuth();
+		//deviceAuth();
 	}
 
 	private void deviceAuth() {
 		try {
-			URL u = new URL("http://sdecima.kd.io/encuestas/services/device/auth");
+			URL u = new URL("http://www.loyalmaker.com/services/device/index");
 			InputStream openStream = u.openStream();
 			//InputStreamReader r = new InputStreamReader(openStream);
 			//BufferedReader br = new BufferedReader(r);

@@ -11,5 +11,6 @@
     <string name="no">No</string>
     <string name="title_activity_fin">FinActivity</string>
     <string name="terminar_encuesta">Gracias por completar la encuesta.</string>
+    <string name="force_sync">Forzar Sincronización</string>
 
 </resources>
