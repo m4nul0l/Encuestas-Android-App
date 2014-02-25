@@ -8,6 +8,7 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,6 +20,13 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		SharedPreferences prefs = getSharedPreferences("config", MODE_PRIVATE);
+		String usuario = prefs.getString("usuario", null);
+		if(usuario == null) {
+			startActivity(new Intent(this, LoginActivity.class));
+			finish();
+		}
 	}
 
 	@Override
