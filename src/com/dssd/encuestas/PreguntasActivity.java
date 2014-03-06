@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.dssd.encuestas.datos.Encuesta;
+import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.Pregunta;
 import com.dssd.encuestas.datos.Respuesta;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -33,20 +34,12 @@ public class PreguntasActivity extends FragmentActivity {
 	}
 	
 	public void initPreguntas() {
-		Encuesta encuesta = null;
-		
-		DBHelper dbHelper = OpenHelperManager.getHelper(this, DBHelper.class);
-		try {
-			Dao<Encuesta, Long> dao = dbHelper.getDao(Encuesta.class);
-			encuesta = dao.queryForId(1L);
-			
+		EncuestaManager em = new EncuestaManager(this);
+		List<Encuesta> list = em.getEncuestas();
+		if(list.size() > 0) {
+			Encuesta encuesta = list.get(0);
 			preguntas = encuesta.getPreguntasArray();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		OpenHelperManager.releaseHelper();
 	}
 	
 	public Pregunta getPregunta() {
@@ -122,7 +115,7 @@ public class PreguntasActivity extends FragmentActivity {
 			
 			PreguntaFragment fragment;
 			
-			if(p.getTipo().compareTo("si-no") == 0) {
+			/*if(p.getTipo().compareTo("si-no") == 0) {
 				fragment = new PreguntaSiNoFragment();
 			}
 			else if(p.getTipo().compareTo("valores") == 0) {
@@ -130,7 +123,7 @@ public class PreguntasActivity extends FragmentActivity {
 					Bundle b = new Bundle();
 					b.putStringArray("valores", new String[] {"1", "2", "3", "4", "5"});
 					fragment.setArguments(b);
-			} else {
+			} else*/ {
 				fragment = new PreguntaFragment();
 			}
 			

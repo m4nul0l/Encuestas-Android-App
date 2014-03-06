@@ -1,18 +1,24 @@
 package com.dssd.encuestas.sync;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.dssd.encuestas.datos.AppConfig;
+import com.dssd.encuestas.webservices.EncuestaItem;
+import com.dssd.encuestas.webservices.EncuestasResult;
+import com.dssd.encuestas.webservices.PreguntaItem;
+import com.dssd.encuestas.webservices.PreguntasResult;
+import com.dssd.encuestas.webservices.TipoPreguntaItem;
+import com.dssd.encuestas.webservices.TipoPreguntaOpcionItem;
+import com.dssd.encuestas.webservices.TiposPreguntasResult;
+import com.dssd.encuestas.webservices.TiposPreguntasOpcionesResult;
 
 import android.accounts.Account;
 import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 
 public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -32,35 +38,26 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 	public void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
 		
-		
 		// TODO PONER proceso :sync en manifiesto!
 		System.out.println("encuestas: onPerformSync");
-		deviceAuth();
-		//deviceAuth();
-	}
-
-	private void deviceAuth() {
-		try {
-			URL u = new URL("http://www.loyalmaker.com/services/device/index");
-			InputStream openStream = u.openStream();
-			//InputStreamReader r = new InputStreamReader(openStream);
-			//BufferedReader br = new BufferedReader(r);
-			
-			java.util.Scanner s = new java.util.Scanner(openStream);
-			s.useDelimiter("\\A");
-		    String str = s.hasNext() ? s.next() : "";
-		    s.close();
-		    
-		    Log.v("loyalmaker", str);
-		    
-        	//Toast.makeText(getContext(), str, Toast.LENGTH_LONG).show();
-		    
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		String device = AppConfig.getInstance(getContext()).getDevice();
+		if(device != null) {
+			//deviceAuth();
+			//deviceAuth();
+			//EncuestasSyncHelper.sincronizarTiposPreguntas(device, getContext());
+			//EncuestasSyncHelper.sincronizarTiposPreguntasOpciones(device, getContext());
+			EncuestasSyncHelper.sincronizarTabla("tipospreguntas", device, getContext(),
+					TiposPreguntasResult.class, TipoPreguntaItem.class);
+			EncuestasSyncHelper.sincronizarTabla("tipospreguntas_opciones", device, getContext(),
+					TiposPreguntasOpcionesResult.class, TipoPreguntaOpcionItem.class);
+			EncuestasSyncHelper.sincronizarTabla("encuestas", device, getContext(),
+					EncuestasResult.class, EncuestaItem.class);
+			EncuestasSyncHelper.sincronizarTabla("preguntas", device, getContext(),
+					PreguntasResult.class, PreguntaItem.class);
 		}
+		
+		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getContext());
+		lbm.sendBroadcast(new Intent(EncuestasSyncHelper.action_sync_end));
 	}
 }

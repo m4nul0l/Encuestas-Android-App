@@ -9,7 +9,7 @@
     tools:context=".LoginActivity" >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -21,9 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/textViewProgressBar"
         android:layout_marginTop="50dp"
-        android:text="@string/usuario"
+        android:text="@string/device"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText

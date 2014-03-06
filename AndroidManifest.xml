@@ -22,7 +22,8 @@
         <activity
             android:name="com.dssd.encuestas.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +40,12 @@
             android:label="@string/title_activity_fin"
             android:screenOrientation="landscape" >
         </activity>
-
+        <activity
+            android:name="com.dssd.encuestas.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="landscape" >
+        </activity>
+        
         <service
             android:name="com.dssd.encuestas.sync.WebAuthenticatorService"
             tools:ignore="ExportedService" >
@@ -70,11 +76,6 @@
             android:exported="false"
             android:syncable="true" >
         </provider>
-
-        <activity
-            android:name="com.dssd.encuestas.LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
     </application>
 
 </manifest>

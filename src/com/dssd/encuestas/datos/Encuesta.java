@@ -7,14 +7,32 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName="encuestas")
 public class Encuesta {
-	@DatabaseField(generatedId=true)
+	@DatabaseField(id=true)
 	private long _id;
+	
+	@DatabaseField
+	private long idEmpresa;
 	
 	@DatabaseField
 	private String nombre;
 	
-	@DatabaseField(foreign=true)
-	private Cliente cliente;
+	@DatabaseField
+	private String mensajeBienvenida;
+	
+	@DatabaseField
+	private String mensajeDespedida;
+	
+	@DatabaseField
+	private String letra;
+	
+	@DatabaseField
+	private String colorSuperior;
+	
+	@DatabaseField
+	private String colorInferior;
+	
+	@DatabaseField
+	private String logo;
 	
 	@ForeignCollectionField
 	ForeignCollection<Pregunta> preguntas;
@@ -27,14 +45,6 @@ public class Encuesta {
 		this.nombre = nombre;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
 	public ForeignCollection<Pregunta> getPreguntas() {
 		return preguntas;
 	}
@@ -45,5 +55,25 @@ public class Encuesta {
 
 	public void setPreguntas(ForeignCollection<Pregunta> preguntas) {
 		this.preguntas = preguntas;
-	}	
+	}
+	
+	public String getMensajeBienvenida() {
+		return mensajeBienvenida;
+	}
+
+	public String getColorSuperior() {
+		return colorSuperior;
+	}
+
+	public void setColorSuperior(String colorSuperior) {
+		this.colorSuperior = colorSuperior;
+	}
+
+	public String getColorInferior() {
+		return colorInferior;
+	}
+
+	public void setColorInferior(String colorInferior) {
+		this.colorInferior = colorInferior;
+	}
 }

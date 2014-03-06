@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName="preguntas")
 public class Pregunta {
-	@DatabaseField(generatedId=true)
+	@DatabaseField(id=true)
 	private long _id;
 	
 	@DatabaseField(foreign=true)
@@ -15,8 +15,17 @@ public class Pregunta {
 	String pregunta;
 	
 	@DatabaseField
-	String tipo;
+	long tipo;
 
+	@DatabaseField
+	long orden;
+	
+	@DatabaseField
+	boolean activo;
+	
+	@DatabaseField(foreign=true)
+	private TipoPregunta tipoPregunta;
+	
 	public Encuesta getEncuesta() {
 		return encuesta;
 	}
@@ -31,13 +40,5 @@ public class Pregunta {
 
 	public void setPregunta(String pregunta) {
 		this.pregunta = pregunta;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
 	}
 }

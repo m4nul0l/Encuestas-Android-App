@@ -1,7 +1,12 @@
 package com.dssd.encuestas.webservices;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
+@Root(name="xml")
 public class Result {
 	
+	@Element
 	private String result;
 
 	public String getResult() {

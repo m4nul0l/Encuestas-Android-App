@@ -12,9 +12,13 @@
     <string name="title_activity_fin">FinActivity</string>
     <string name="terminar_encuesta">Gracias por completar la encuesta.</string>
     <string name="force_sync">Forzar Sincronización</string>
-    <string name="title_activity_login">Ingrese su usuario de LoyalMaker.com</string>
-    <string name="usuario">Usuario</string>
-    <string name="mensaje_login">Ingrese el nombre de usuario que definió en LoyalMaker.com</string>
+    <string name="title_activity_login">Ingrese su dispositivo de LoyalMaker.com</string>
+    <string name="device">Dispositivo</string>
+    <string name="mensaje_login">Ingrese el nombre de dispositivo que definió en LoyalMaker.com</string>
     <string name="boton_login">Validar</string>
+    <string name="login_edit_error">Debe ingresar un nombre de dispositivo</string>
+    <string name="login_invalid_device">Dispositivo inválido</string>
+    <string name="title_activity_sincro">Estado de Sincronización</string>
+    <string name="sincro_titulo">Sincronizando datos con LoyalMaker.com</string>
 
 </resources>
