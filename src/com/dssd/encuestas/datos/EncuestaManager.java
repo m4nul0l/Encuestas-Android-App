@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.dssd.encuestas.DBHelper;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -23,20 +24,39 @@ public class EncuestaManager {
 		if(dbHelper == null)
 			dbHelper = OpenHelperManager.getHelper(this.context, DBHelper.class);
 	}
-
-	public List<Encuesta> getEncuestas() {
-		initDBHelper();
+	
+	public static <T> List<T> getElements(EncuestaManager em, Class<T> elementType) {
+		em.initDBHelper();
 		try {
-			Dao<Encuesta, Long> dao = dbHelper.getDao(Encuesta.class);
-			List<Encuesta> list = dao.queryForAll();
-			
+			Dao<T, Long> dao = em.dbHelper.getDao(elementType);
+			List<T> list = dao.queryForAll();
 			return list;
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			Log.e("EncuestaManager", "getElements: " + e.getLocalizedMessage());
 			e.printStackTrace();
-			return new ArrayList<Encuesta>(0);
+			return new ArrayList<T>(0);
 		}
+	}
+	
+	public List<Encuesta> getEncuestas() {
+		return getElements(this, Encuesta.class);
+	}
+	
+	public static <T> T refreshObject(EncuestaManager em, T object) {
+		em.initDBHelper();
+		try {
+			Dao<T, Long> dao = em.dbHelper.getDao(object.getClass());
+			dao.refresh(object);
+			return object;
+		} catch (SQLException e) {
+			Log.e("EncuestaManager", "refreshTipoPregunta: " + e.getLocalizedMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public TipoPregunta refreshTipoPregunta(TipoPregunta tipoPregunta) {
+		return refreshObject(this, tipoPregunta);
 	}
 	
 	@Override

@@ -1,5 +1,15 @@
 package com.dssd.encuestas.sync;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Date;
+
 import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -7,8 +17,11 @@ import org.springframework.web.client.RestTemplate;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.util.Log;
 
 import com.dssd.encuestas.DBHelper;
+import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.webservices.ItemsResult;
 import com.dssd.encuestas.webservices.Result;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -21,6 +34,9 @@ public class EncuestasSyncHelper {
 	public static final String serverBaseUrl = "http://www.loyalmaker.com/services/device/";
 	public static final String serverBaseUrlTemplate1 = "http://www.loyalmaker.com/services/device/{service}";
 	public static final String serverBaseUrlTemplate2 = "http://www.loyalmaker.com/services/device/{service}/{data}";
+	
+	public static final String assetsBaseUrl = "http://www.loyalmaker.com/assets/uploads/files/";
+	public static final Uri assetsBaseUri = Uri.parse(assetsBaseUrl);
 	
 	public static boolean registerUser(String user) {
 		RestTemplate restTemplate = new RestTemplate();
@@ -44,52 +60,6 @@ public class EncuestasSyncHelper {
 				"sendInfoUser", user);
 		return result.isOk();
 	}
-	
-	/*public static <T extends ItemsResult<U>, U> boolean sincronizarTabla(String serviceName, String device, Context context, Class<T> resultType, Class<U> elementType) {
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new SimpleXmlHttpMessageConverter());
-		
-		//String uri = serverBaseUrl + "registerUser/" + user;
-		T tipos = restTemplate.getForObject(serverBaseUrlTemplate2, resultType,
-				serviceName, device);
-		
-		boolean result = tipos.isOk();
-		
-		if(tipos.isOk()) {
-			
-			DBHelper dbHelper = OpenHelperManager.getHelper(context, DBHelper.class);
-			try {
-				TableUtils.clearTable(dbHelper.getConnectionSource(), elementType);
-				
-				Dao<U, Long> dao = dbHelper.getDao(elementType);
-				
-				for(U tipo : tipos.getItems()) {
-					dao.create(tipo);
-				}
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				result = false;
-			} finally {
-				OpenHelperManager.releaseHelper();
-			}
-		}
-		
-		return result;
-	}*/
-	
-	/*public static boolean sincronizarTiposPreguntas(String device, Context context) {
-		boolean res = sincronizarTabla("tipospreguntas", device, context,
-				TiposPreguntas.class, TipoPregunta.class);
-		return res;
-	}
-	
-	public static boolean sincronizarTiposPreguntasOpciones(String device, Context context) {
-		boolean res = sincronizarTabla("tipospreguntas_opciones", device, context,
-				TiposPreguntasOpciones.class, TipoPreguntaOpcion.class);
-		return res;
-	}*/
 	
 	public static <T extends ItemsResult<U>, U> boolean sincronizarTabla(String serviceName, String device, Context context,
 			Class<T> resultType, Class<U> elementType) {
@@ -125,49 +95,71 @@ public class EncuestasSyncHelper {
 		return result;
 	}
 	
+	public static void sincronizarAssetsTiposPreguntasOpciones(Context context) {
+		EncuestaManager em = new EncuestaManager(context);
+		
+	}
 	
-	/*public static boolean sincronizarEncuestas(String device, Context context) {
+	public static boolean sincronizarAsset(String path, String fileName, Context context) {
+		Uri fullURL = assetsBaseUri.buildUpon().appendPath(path).appendPath(fileName).build();
+		//Uri fullURL =  Uri.withAppendedPath(assetsBaseUri, assetURL);
 		
-		ItemsResult<Encuesta> ir = new ItemsResult<Encuesta>();
-		
-		boolean res = sincronizarTabla("encuestas", device, context,
-				ItemsResult.class, Encuesta.class);
-		return res;
-	}*/
-	
-	/*
-	public static boolean sincronizarTiposPreguntas(String user, Context context) {
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new SimpleXmlHttpMessageConverter());
-		
-		//String uri = serverBaseUrl + "registerUser/" + user;
-		TiposPreguntas tipos = restTemplate.getForObject(serverBaseUrlTemplate2, TiposPreguntas.class,
-				"tipospreguntas", user);
-		
-		boolean result = tipos.isOk();
-		
-		if(tipos.isOk()) {
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		try {
+			URL url = new URL(fullURL.toString());
+			URLConnection urlConnection = url.openConnection();
+			urlConnection.connect();
 			
-			DBHelper dbHelper = OpenHelperManager.getHelper(context, DBHelper.class);
-			try {
-				TableUtils.clearTable(dbHelper.getConnectionSource(), TipoPregunta.class);
+			long newAssetUnixEpochDate = urlConnection.getHeaderFieldDate("Last-Modified", new Date().getTime());
+			
+			File dir = context.getDir(path, Context.MODE_PRIVATE);
+			File file = new File(dir, fileName);
+			boolean needsUpdate = true;
+			if(file.exists()) {
+				long lastModifiedUnixEpochDate = file.lastModified();
+				if(lastModifiedUnixEpochDate != 0) {
+					long dateDiff = newAssetUnixEpochDate - lastModifiedUnixEpochDate;
+					if(dateDiff <= 1800000) { // 1800000 = 30 minutos
+						// el newAsset es mas viejo que el de Android, no actualizar
+						needsUpdate = false;
+					}
+				}
+			}
+			
+			if(needsUpdate) {
+				// update file
+				inputStream = urlConnection.getInputStream();
+				outputStream = new FileOutputStream(file);
 				
-				Dao<TipoPregunta, Long> dao = dbHelper.getDao(TipoPregunta.class);
-				
-				for(TipoPregunta tipo : tipos.getItems()) {
-					dao.create(tipo);
+				byte[] buf = new byte[16384];
+				int tam = inputStream.read(buf);
+				while(tam >= 0) {
+					outputStream.write(buf, 0, tam);
+					tam = inputStream.read(buf);
 				}
 				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				inputStream.close();
+				outputStream.close();
+			}
+			
+			return true;
+		} catch (MalformedURLException e) {
+			Log.e("EncuestasSyncHelper", "sincronizarAsset: " + e.getLocalizedMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			Log.e("EncuestasSyncHelper", "sincronizarAsset: " + e.getLocalizedMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if(inputStream != null) inputStream.close();
+				if(outputStream != null) outputStream.close();
+			} catch (IOException e) {
+				Log.e("EncuestasSyncHelper", "sincronizarAsset: " + e.getLocalizedMessage());
 				e.printStackTrace();
-				result = false;
-			} finally {
-				OpenHelperManager.releaseHelper();
 			}
 		}
 		
-		return result;
+		return false;
 	}
-	*/
 }

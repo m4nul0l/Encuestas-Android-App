@@ -41,4 +41,12 @@ public class Pregunta {
 	public void setPregunta(String pregunta) {
 		this.pregunta = pregunta;
 	}
+
+	public TipoPregunta getTipoPregunta() {
+		return tipoPregunta;
+	}
+
+	public void setTipoPregunta(TipoPregunta tipoPregunta) {
+		this.tipoPregunta = tipoPregunta;
+	}
 }

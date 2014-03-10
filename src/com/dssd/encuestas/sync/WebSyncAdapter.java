@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -39,18 +40,18 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 			ContentProviderClient provider, SyncResult syncResult) {
 		
 		// TODO PONER proceso :sync en manifiesto!
-		System.out.println("encuestas: onPerformSync");
+		Log.i("WebSyncAdapter", "onPerformSync: sync started");
 		
 		String device = AppConfig.getInstance(getContext()).getDevice();
 		if(device != null) {
-			//deviceAuth();
-			//deviceAuth();
-			//EncuestasSyncHelper.sincronizarTiposPreguntas(device, getContext());
-			//EncuestasSyncHelper.sincronizarTiposPreguntasOpciones(device, getContext());
+			// Sincronizo TiposPreguntas y sus Opciones
 			EncuestasSyncHelper.sincronizarTabla("tipospreguntas", device, getContext(),
 					TiposPreguntasResult.class, TipoPreguntaItem.class);
 			EncuestasSyncHelper.sincronizarTabla("tipospreguntas_opciones", device, getContext(),
 					TiposPreguntasOpcionesResult.class, TipoPreguntaOpcionItem.class);
+			// Sincronizo los assets (imagenes) de los TiposPreguntasOpciones
+			EncuestasSyncHelper.sincronizarAssetsTiposPreguntasOpciones(getContext());
+			// Sincronizo Encuestas y Preguntas
 			EncuestasSyncHelper.sincronizarTabla("encuestas", device, getContext(),
 					EncuestasResult.class, EncuestaItem.class);
 			EncuestasSyncHelper.sincronizarTabla("preguntas", device, getContext(),

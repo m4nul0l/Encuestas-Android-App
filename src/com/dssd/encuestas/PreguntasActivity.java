@@ -7,6 +7,8 @@ import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.Pregunta;
 import com.dssd.encuestas.datos.Respuesta;
+import com.dssd.encuestas.datos.TipoPregunta;
+import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -23,19 +25,21 @@ public class PreguntasActivity extends FragmentActivity {
 	
 	Pregunta[] preguntas;
 	int preguntaActual = -1;
+	EncuestaManager encuestaManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preguntas);
 		
+		encuestaManager = new EncuestaManager(this);
+		
 		initPreguntas();
 		mostrarSiguientePregunta();
 	}
 	
 	public void initPreguntas() {
-		EncuestaManager em = new EncuestaManager(this);
-		List<Encuesta> list = em.getEncuestas();
+		List<Encuesta> list = encuestaManager.getEncuestas();
 		if(list.size() > 0) {
 			Encuesta encuesta = list.get(0);
 			preguntas = encuesta.getPreguntasArray();
@@ -114,6 +118,22 @@ public class PreguntasActivity extends FragmentActivity {
 			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			
 			PreguntaFragment fragment;
+			fragment = new PreguntaValoresFragment();
+			Bundle b = new Bundle();
+			
+			TipoPregunta tipoPregunta = p.getTipoPregunta();
+			encuestaManager.refreshTipoPregunta(tipoPregunta);
+			TipoPreguntaOpcion[] opcionesArray = tipoPregunta.getOpcionesArray();
+			
+			String[] opciones = new String[opcionesArray.length];
+			for (int i = 0; i < opcionesArray.length; i++) {
+				TipoPreguntaOpcion tipoPreguntaOpcion = opcionesArray[i];
+				opciones[i] = tipoPreguntaOpcion.getValor();
+			}
+			
+			//b.putStringArray("valores", new String[] {"1", "2", "3", "4", "5"});
+			b.putStringArray("valores", opciones);
+			fragment.setArguments(b);
 			
 			/*if(p.getTipo().compareTo("si-no") == 0) {
 				fragment = new PreguntaSiNoFragment();
@@ -123,9 +143,9 @@ public class PreguntasActivity extends FragmentActivity {
 					Bundle b = new Bundle();
 					b.putStringArray("valores", new String[] {"1", "2", "3", "4", "5"});
 					fragment.setArguments(b);
-			} else*/ {
+			} else {
 				fragment = new PreguntaFragment();
-			}
+			}*/
 			
 			fragment.setPregunta(p);
 			
