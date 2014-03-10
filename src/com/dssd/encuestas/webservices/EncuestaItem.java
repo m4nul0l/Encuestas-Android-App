@@ -11,6 +11,9 @@ public class EncuestaItem {
 	@Element
 	long idEmpresa;
 	
+	@Element
+	long idSucursal;
+	
 	@Element(required=false)
 	String nombre;
 	

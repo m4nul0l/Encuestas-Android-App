@@ -24,12 +24,11 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		
 		if(bundle.containsKey("valores")) {
 			this.valores = bundle.getStringArrayList("valores");
-			
-			if(this.valores == null) {
-				String[] stringArray = bundle.getStringArray("valores");
-				if(stringArray != null) {
-					this.valores = Arrays.asList(stringArray);
-				}
+		} else
+		if(bundle.containsKey("valoresArray")) {
+			String[] stringArray = bundle.getStringArray("valores");
+			if(stringArray != null) {
+				this.valores = Arrays.asList(stringArray);
 			}
 		}
 	}
@@ -48,6 +47,11 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			@Override
 			public void onClick(View v) {
 				PreguntasActivity activity = (PreguntasActivity) getActivity();
+				
+				//Respuesta r = new Respuesta();
+				//r.setPregunta(pregunta);
+				//r.setRespuesta();
+				
 				activity.responderPregunta(null);
 			}
 		};

@@ -110,8 +110,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void initBienvenida() {
-		EncuestaManager em = new EncuestaManager(this);
-		List<Encuesta> list = em.getEncuestas();
+		List<Encuesta> list = encuestaManager.getEncuestas();
 		if(list.size() > 0) {
 			Encuesta encuesta = list.get(0);
 			String mensajeBienvenida = encuesta.getMensajeBienvenida();

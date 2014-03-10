@@ -60,7 +60,11 @@ public class Encuesta {
 	public String getMensajeBienvenida() {
 		return mensajeBienvenida;
 	}
-
+	
+	public String getMensajeDespedida() {
+		return mensajeDespedida;
+	}
+	
 	public String getColorSuperior() {
 		return colorSuperior;
 	}

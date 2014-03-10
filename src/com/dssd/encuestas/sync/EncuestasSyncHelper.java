@@ -96,7 +96,7 @@ public class EncuestasSyncHelper {
 	}
 	
 	public static void sincronizarAssetsTiposPreguntasOpciones(Context context) {
-		EncuestaManager em = new EncuestaManager(context);
+		//EncuestaManager em = new EncuestaManager(context);
 		
 	}
 	

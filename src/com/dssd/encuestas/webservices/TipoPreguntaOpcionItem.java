@@ -3,7 +3,7 @@ package com.dssd.encuestas.webservices;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-@Root(name="item")
+@Root(name="item", strict=false)
 public class TipoPreguntaOpcionItem {
 	@Element
 	long idTipoOpcion;
@@ -13,6 +13,9 @@ public class TipoPreguntaOpcionItem {
 	
 	@Element
 	String valor;
+	
+	@Element(required=false)
+	String descripcion;
 	
 	@Element(required=false)
 	String imagen;
