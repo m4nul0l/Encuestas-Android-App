@@ -5,13 +5,11 @@ import java.util.List;
 import com.dssd.encuestas.datos.AppConfig;
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
-import com.dssd.encuestas.info.DeviceInfoHelper;
 import com.dssd.encuestas.sync.EncuestasSyncHelper;
 import com.dssd.encuestas.templates.TwoColorDrawable;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.R.color;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -22,18 +20,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
-import android.graphics.drawable.shapes.Shape;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -80,7 +68,10 @@ public class MainActivity extends Activity {
 				};
 				mainHandler.postDelayed(myRunnable, sync_retry_wait);
 			} else {
-				noDataWaitProgressDialog.dismiss();
+				if(noDataWaitProgressDialog != null) {
+					noDataWaitProgressDialog.dismiss();
+					noDataWaitProgressDialog = null;
+				}
 				initBienvenida();
 			}
 		}
@@ -90,6 +81,9 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		
+		LocalBroadcastManager.getInstance(this).registerReceiver(syncReceiver,
+				new IntentFilter(EncuestasSyncHelper.action_sync_end));
+		
 		encuestas = encuestaManager.getEncuestas();
 		if(encuestas.size() == 0) {
 			noDataWaitProgressDialog = ProgressDialog.show(this, "Sincronizando", "Por favor espere...", true, true, new DialogInterface.OnCancelListener() {
@@ -98,9 +92,6 @@ public class MainActivity extends Activity {
 					finish();
 				}
 			});
-			LocalBroadcastManager.getInstance(this).registerReceiver(syncReceiver,
-					new IntentFilter(EncuestasSyncHelper.action_sync_end));
-			
 			manualSync();
 		} else {
 			initBienvenida();
@@ -133,6 +124,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void setBackground(Encuesta encuesta) {
 		int color1 = getResources().getColor(R.color.defaultColorSuperior);
 		int color2 = getResources().getColor(R.color.defaultColorSuperior);
@@ -158,12 +150,12 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
 		case R.id.action_force_sync:
-			String xml = DeviceInfoHelper.getInstance(this).getDeviceInfoXML();
-			System.out.println(xml);
+			//String xml = DeviceInfoHelper.getInstance(this).getDeviceInfoXML();
+			//System.out.println(xml);
 			//testSync();
+			manualSync();
 			return true;
 
 		default:
@@ -208,19 +200,21 @@ public class MainActivity extends Activity {
              * then call context.setIsSyncable(account, AUTHORITY, 1)
              * here.
              */
-        	Toast.makeText(this, "added", Toast.LENGTH_SHORT).show();
+        	//Toast.makeText(this, "added", Toast.LENGTH_SHORT).show();
         } else {
             /*
              * The account exists or some other error occurred. Log this, report it,
              * or handle it internally.
              */
-        	Toast.makeText(this, "NOT added", Toast.LENGTH_SHORT).show();
+        	//Toast.makeText(this, "NOT added", Toast.LENGTH_SHORT).show();
         }
         
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         ContentResolver.requestSync(newAccount, AUTHORITY, settingsBundle);
+        
+        Toast.makeText(this, R.string.sincro_manual, Toast.LENGTH_SHORT).show();
 	}
 	
 }
