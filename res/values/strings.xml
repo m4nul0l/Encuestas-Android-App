@@ -20,6 +20,6 @@
     <string name="login_invalid_device">Dispositivo inválido</string>
     <string name="title_activity_sincro">Estado de Sincronización</string>
     <string name="sincro_titulo">Sincronizando datos con LoyalMaker.com</string>
-    <string name="sincro_manual">Forzando la sincronización de datos...</string>
+    <string name="sincro_manual">Forzando la sincronización de datos&#8230;</string>
 
 </resources>
