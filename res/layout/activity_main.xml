@@ -16,8 +16,27 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
         android:text="@string/comenzar_encuesta"
         android:textColor="#FFFFFF"
         android:textSize="30sp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        android:contentDescription="@string/loyalmaker_logo"
+        android:src="@drawable/logo_loyalmaker" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/comenzar"
+        android:paddingTop="20dp"
+        android:src="@drawable/boton_comenzar" />
 
 </RelativeLayout>

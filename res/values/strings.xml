@@ -21,5 +21,7 @@
     <string name="title_activity_sincro">Estado de Sincronización</string>
     <string name="sincro_titulo">Sincronizando datos con LoyalMaker.com</string>
     <string name="sincro_manual">Forzando la sincronización de datos&#8230;</string>
+    <string name="loyalmaker_logo">Logo LoyalMaker.com</string>
+    <string name="comenzar">Comenzar</string>
 
 </resources>

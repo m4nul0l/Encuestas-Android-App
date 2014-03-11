@@ -6,7 +6,6 @@ import com.dssd.encuestas.datos.AppConfig;
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.sync.EncuestasSyncHelper;
-import com.dssd.encuestas.templates.TwoColorDrawable;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -119,25 +117,8 @@ public class MainActivity extends Activity {
 				tvb.setText(mensajeBienvenida);
 			}
 			
-			//setBackground(encuesta);
+			TemplateUtils.setDefaultBackground(this, encuesta);
 		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	public void setBackground(Encuesta encuesta) {
-		int color1 = getResources().getColor(R.color.defaultColorSuperior);
-		int color2 = getResources().getColor(R.color.defaultColorSuperior);
-		//		Color.parseColor("#DF0000"), Color.parseColor("#0000DF")
-		
-		if(encuesta.getColorSuperior() != null && encuesta.getColorSuperior().compareTo("") != 0) {
-			color1 = Color.parseColor("#"+encuesta.getColorSuperior());
-		}
-		if(encuesta.getColorInferior() != null && encuesta.getColorInferior().compareTo("") != 0) {
-			color2 = Color.parseColor("#"+encuesta.getColorInferior());
-		}
-		
-		TwoColorDrawable colorDrawable = new TwoColorDrawable(color1, color2);
-		contentView.setBackgroundDrawable(colorDrawable);
 	}
 	
 	@Override

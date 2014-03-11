@@ -37,6 +37,7 @@ public class PreguntasActivity extends FragmentActivity {
 		List<Encuesta> list = encuestaManager.getEncuestas();
 		if(list.size() > 0) {
 			Encuesta encuesta = list.get(0);
+			TemplateUtils.setDefaultBackground(this, encuesta);
 			preguntas = encuesta.getPreguntasArray();
 		}
 	}

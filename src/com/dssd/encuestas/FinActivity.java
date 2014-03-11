@@ -40,6 +40,7 @@ public class FinActivity extends Activity {
 				TextView tvb = (TextView) findViewById(R.id.textViewDespedida);
 				tvb.setText(mensajeDespedida);
 			}
+			TemplateUtils.setDefaultBackground(this, encuesta);
 		}
 	}
 }
