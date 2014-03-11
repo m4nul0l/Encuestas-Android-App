@@ -1,14 +1,11 @@
 package com.dssd.encuestas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.Pregunta;
 import com.dssd.encuestas.datos.Respuesta;
-import com.dssd.encuestas.datos.TipoPregunta;
-import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 
 import android.os.Bundle;
 import android.app.AlertDialog;
@@ -91,45 +88,10 @@ public class PreguntasActivity extends FragmentActivity {
 			
 			PreguntaFragment fragment;
 			fragment = new PreguntaValoresFragment();
-			Bundle b = new Bundle();
-			
-			TipoPregunta tipoPregunta = p.getTipoPregunta();
-			encuestaManager.refreshTipoPregunta(tipoPregunta);
-			TipoPreguntaOpcion[] opcionesArray = tipoPregunta.getOpcionesArray();
-			
-			ArrayList<String> opciones = new ArrayList<String>(opcionesArray.length);
-			//String[] opciones = new String[opcionesArray.length];
-			for (int i = 0; i < opcionesArray.length; i++) {
-				TipoPreguntaOpcion tipoPreguntaOpcion = opcionesArray[i];
-				opciones.add(tipoPreguntaOpcion.getValor());
-			}
-			
-			//b.putStringArray("valores", new String[] {"1", "2", "3", "4", "5"});
-			b.putStringArrayList("valores", opciones);
-			fragment.setArguments(b);
-			
-			/*if(p.getTipo().compareTo("si-no") == 0) {
-				fragment = new PreguntaSiNoFragment();
-			}
-			else if(p.getTipo().compareTo("valores") == 0) {
-					fragment = new PreguntaValoresFragment();
-					Bundle b = new Bundle();
-					b.putStringArray("valores", new String[] {"1", "2", "3", "4", "5"});
-					fragment.setArguments(b);
-			} else {
-				fragment = new PreguntaFragment();
-			}*/
-			
 			fragment.setPregunta(p);
 			
-			//if(preguntaActual == 0) {
-			//	fragmentTransaction.add(R.id.preguntasMainLayout, fragment);
-			//} else {
-				// Replace whatever is in the fragment_container view with this fragment,
-				// and add the transaction to the back stack
-				fragmentTransaction.replace(R.id.preguntasMainLayout, fragment);
-				fragmentTransaction.addToBackStack(null);
-			//}
+			fragmentTransaction.replace(R.id.preguntasMainLayout, fragment);
+			fragmentTransaction.addToBackStack(null);
 			fragmentTransaction.commit();
 		} else {
 			// no hay mas preguntas

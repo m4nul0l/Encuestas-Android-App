@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
@@ -22,6 +23,7 @@ import android.util.Log;
 
 import com.dssd.encuestas.DBHelper;
 import com.dssd.encuestas.datos.EncuestaManager;
+import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 import com.dssd.encuestas.webservices.ItemsResult;
 import com.dssd.encuestas.webservices.Result;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -76,17 +78,9 @@ public class EncuestasSyncHelper {
 			
 			DBHelper dbHelper = OpenHelperManager.getHelper(context, DBHelper.class);
 			try {
-				//TableUtils.clearTable(dbHelper.getConnectionSource(), TiposPreguntas.class);
-				//Dao<U, Long> dao = dbHelper.getDao(elementType);
-				
 				SQLiteDatabase db = dbHelper.getWritableDatabase();
 				itemsResult.deleteAllFromDatabase(db);
 				itemsResult.insertIntoDatabase(db);
-				
-			/*} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				result = false;*/
 			} finally {
 				OpenHelperManager.releaseHelper();
 			}
@@ -96,8 +90,15 @@ public class EncuestasSyncHelper {
 	}
 	
 	public static void sincronizarAssetsTiposPreguntasOpciones(Context context) {
-		//EncuestaManager em = new EncuestaManager(context);
-		
+		EncuestaManager em = new EncuestaManager(context);
+		List<TipoPreguntaOpcion> opciones = em.getTiposPreguntasOpciones();
+		em.close();
+		String path = "ratings";
+		for (TipoPreguntaOpcion opcion : opciones) {
+			String imgName = opcion.getImagen();
+			if(imgName != null && imgName.trim().length() > 0)
+				sincronizarAsset(path, imgName, context);
+		}
 	}
 	
 	public static boolean sincronizarAsset(String path, String fileName, Context context) {

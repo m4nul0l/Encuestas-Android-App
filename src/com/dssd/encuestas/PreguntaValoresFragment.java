@@ -1,14 +1,23 @@
 package com.dssd.encuestas;
 
-import java.util.Arrays;
+import java.io.File;
 import java.util.List;
 
+import com.dssd.encuestas.datos.EncuestaManager;
+import com.dssd.encuestas.datos.TipoPregunta;
+import com.dssd.encuestas.datos.TipoPreguntaOpcion;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class PreguntaValoresFragment extends PreguntaFragment {
@@ -18,19 +27,15 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	public PreguntaValoresFragment() {
 	}
 	
-	@Override
-	public void setArguments(Bundle bundle) {
-		super.setArguments(bundle);
+	TipoPreguntaOpcion[] getOpciones() {
+		EncuestaManager encuestaManager = new EncuestaManager(getActivity());
 		
-		if(bundle.containsKey("valores")) {
-			this.valores = bundle.getStringArrayList("valores");
-		} else
-		if(bundle.containsKey("valoresArray")) {
-			String[] stringArray = bundle.getStringArray("valores");
-			if(stringArray != null) {
-				this.valores = Arrays.asList(stringArray);
-			}
-		}
+		TipoPregunta tipoPregunta = getPregunta().getTipoPregunta();
+		encuestaManager.refreshTipoPregunta(tipoPregunta);
+		
+		TipoPreguntaOpcion[] opcionesArray = tipoPregunta.getOpcionesArray();
+		
+		return opcionesArray;
 	}
 	
 	@Override
@@ -56,24 +61,33 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			}
 		};
 		
-		if(valores != null) {
-			for (String valor : valores) {
+		TipoPreguntaOpcion[] opciones = getOpciones();
+		
+		for (TipoPreguntaOpcion opcion : opciones) {
+			View newView = null;
+			String imagen = opcion.getImagen();
+			if(imagen != null) {
+				File dir = getActivity().getDir("ratings", Context.MODE_PRIVATE);
+				File file = new File(dir, imagen);
+				
+				Bitmap bitmap = BitmapFactory.decodeFile(file.toString());
+				
+				ImageButton b = new ImageButton(getActivity());
+				b.setImageBitmap(bitmap);
+				b.setBackgroundColor(Color.TRANSPARENT);
+				
+				newView = b;
+			} else {
 				Button b = (Button) inflater.inflate(R.layout.opciones_valores_button, opcionesLayout, false);
 				//Button b = new Button(getActivity());
-				b.setText(valor);
+				b.setText(opcion.getValor());
 				
-				b.setOnClickListener(l);
-				ll.addView(b);
+				newView = b;
 			}
+			
+			newView.setOnClickListener(l);
+			ll.addView(newView);
 		}
-		
-		
-		//inflater.inflate(R.layout.opciones_si_no, opcionesLayout);
-		
-		//Button bSi = (Button) opcionesLayout.findViewById(R.id.opcionesButtonSi);
-		//bSi.setOnClickListener(l);
-		//Button bNo = (Button) opcionesLayout.findViewById(R.id.opcionesButtonNo);
-		//bNo.setOnClickListener(l);
 		
 		return v;
 	}

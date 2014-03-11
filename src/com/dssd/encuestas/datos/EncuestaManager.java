@@ -42,6 +42,10 @@ public class EncuestaManager {
 		return getElements(this, Encuesta.class);
 	}
 	
+	public List<TipoPreguntaOpcion> getTiposPreguntasOpciones() {
+		return getElements(this, TipoPreguntaOpcion.class);
+	}
+	
 	public static <T> T refreshObject(EncuestaManager em, T object) {
 		em.initDBHelper();
 		try {
@@ -59,8 +63,15 @@ public class EncuestaManager {
 		return refreshObject(this, tipoPregunta);
 	}
 	
+	public void close() {
+		if(dbHelper != null) {
+			OpenHelperManager.releaseHelper();
+			dbHelper = null;
+		}
+	}
+	
 	@Override
 	protected void finalize() throws Throwable {
-		OpenHelperManager.releaseHelper();
+		close();
 	}
 }
