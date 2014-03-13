@@ -9,19 +9,54 @@
         android:id="@+id/frameLayoutOpciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="48dp" >
+
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/textViewPregunta"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textViewPregunta"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/activity_text_size" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="-10dp"
+        android:layout_marginLeft="20dp"
+        android:contentDescription="@string/loyalmaker_logo"
+        android:scaleType="centerInside"
+        android:src="@drawable/logo_loyalmaker" />
+
+    <ImageView
+        android:id="@+id/imageViewEmpresa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="@dimen/activity_text_size" />
+        android:layout_marginBottom="30dp"
+        android:scaleType="centerInside"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

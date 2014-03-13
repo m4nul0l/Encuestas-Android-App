@@ -27,6 +27,10 @@ public class PreguntaFragment extends Fragment {
 		refreshPregunta();
 	}
 	
+	public Pregunta getPregunta() {
+		return pregunta;
+	}
+
 	protected void refreshPregunta() {
 		if(pregunta != null && textViewPregunta != null) {
 			textViewPregunta.setText(pregunta.getPregunta());

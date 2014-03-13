@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Encuestas</string>
+    <string name="app_name">LoyalMaker</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="comenzar_encuesta">Presione la pantalla para comenzar la encuesta</string>
@@ -11,5 +11,20 @@
     <string name="no">No</string>
     <string name="title_activity_fin">FinActivity</string>
     <string name="terminar_encuesta">Gracias por completar la encuesta.</string>
+    <string name="force_sync">Forzar Sincronización</string>
+    <string name="title_activity_login">Ingrese su dispositivo de LoyalMaker.com</string>
+    <string name="device">Dispositivo</string>
+    <string name="mensaje_login">Ingrese el nombre de dispositivo que definió en LoyalMaker.com</string>
+    <string name="boton_login">Validar</string>
+    <string name="login_edit_error">Debe ingresar un nombre de dispositivo</string>
+    <string name="login_invalid_device">Dispositivo inválido</string>
+    <string name="title_activity_sincro">Estado de Sincronización</string>
+    <string name="sincronizando">Sincronizando</string>
+    <string name="por_favor_espere">Por favor espere&#8230;</string>
+    <string name="sincro_titulo">Sincronizando datos con LoyalMaker.com</string>
+    <string name="sincro_manual">Forzando la sincronización de datos&#8230;</string>
+    <string name="sincro_manual_fin">Se terminó la sincronización de datos</string>
+    <string name="loyalmaker_logo">Logo LoyalMaker.com</string>
+    <string name="comenzar">Comenzar</string>
 
 </resources>

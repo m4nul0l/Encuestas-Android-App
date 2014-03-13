@@ -1,13 +1,11 @@
 package com.dssd.encuestas;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.dssd.encuestas.datos.Encuesta;
+import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.Pregunta;
 import com.dssd.encuestas.datos.Respuesta;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
 
 import android.os.Bundle;
 import android.app.AlertDialog;
@@ -22,56 +20,28 @@ public class PreguntasActivity extends FragmentActivity {
 	
 	Pregunta[] preguntas;
 	int preguntaActual = -1;
+	EncuestaManager encuestaManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preguntas);
 		
+		encuestaManager = new EncuestaManager(this);
+		
 		initPreguntas();
 		mostrarSiguientePregunta();
 	}
 	
 	public void initPreguntas() {
-		Encuesta encuesta = null;
-		
-		DBHelper dbHelper = OpenHelperManager.getHelper(this, DBHelper.class);
-		try {
-			Dao<Encuesta, Long> dao = dbHelper.getDao(Encuesta.class);
-			encuesta = dao.queryForId(1L);
-			
+		List<Encuesta> list = encuestaManager.getEncuestas();
+		if(list.size() > 0) {
+			Encuesta encuesta = list.get(0);
+			TemplateUtils.setDefaultBackground(this, encuesta);
 			preguntas = encuesta.getPreguntasArray();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		OpenHelperManager.releaseHelper();
 	}
 	
-	public Pregunta getPregunta() {
-		Pregunta pregunta = null;
-		
-		DBHelper dbHelper = OpenHelperManager.getHelper(this, DBHelper.class);
-		try {
-			Dao<Pregunta, Long> dao = dbHelper.getDao(Pregunta.class);
-			List<Pregunta> list = dao.queryForEq("encuesta_id", 1);
-			
-			if(list.size() > 0)
-				pregunta = list.get(0);
-			
-			/*for (Pregunta pregunta : list) {
-				System.out.println("preg: " + pregunta.getPregunta() + " (" + pregunta.getTipo() + ")");
-			}*/
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		OpenHelperManager.releaseHelper();
-		
-		return pregunta;
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -81,9 +51,6 @@ public class PreguntasActivity extends FragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		//super.onBackPressed();
-		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.cerrar_preguntas_esta_seguro)
 			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -121,29 +88,11 @@ public class PreguntasActivity extends FragmentActivity {
 			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			
 			PreguntaFragment fragment;
-			
-			if(p.getTipo().compareTo("si-no") == 0) {
-				fragment = new PreguntaSiNoFragment();
-			}
-			else if(p.getTipo().compareTo("valores") == 0) {
-					fragment = new PreguntaValoresFragment();
-					Bundle b = new Bundle();
-					b.putStringArray("valores", new String[] {"1", "2", "3", "4", "5"});
-					fragment.setArguments(b);
-			} else {
-				fragment = new PreguntaFragment();
-			}
-			
+			fragment = new PreguntaValoresFragment();
 			fragment.setPregunta(p);
 			
-			//if(preguntaActual == 0) {
-			//	fragmentTransaction.add(R.id.preguntasMainLayout, fragment);
-			//} else {
-				// Replace whatever is in the fragment_container view with this fragment,
-				// and add the transaction to the back stack
-				fragmentTransaction.replace(R.id.preguntasMainLayout, fragment);
-				fragmentTransaction.addToBackStack(null);
-			//}
+			fragmentTransaction.replace(R.id.preguntasMainLayout, fragment);
+			fragmentTransaction.addToBackStack(null);
 			fragmentTransaction.commit();
 		} else {
 			// no hay mas preguntas
