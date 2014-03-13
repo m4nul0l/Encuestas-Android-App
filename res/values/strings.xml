@@ -19,8 +19,11 @@
     <string name="login_edit_error">Debe ingresar un nombre de dispositivo</string>
     <string name="login_invalid_device">Dispositivo inválido</string>
     <string name="title_activity_sincro">Estado de Sincronización</string>
+    <string name="sincronizando">Sincronizando</string>
+    <string name="por_favor_espere">Por favor espere&#8230;</string>
     <string name="sincro_titulo">Sincronizando datos con LoyalMaker.com</string>
     <string name="sincro_manual">Forzando la sincronización de datos&#8230;</string>
+    <string name="sincro_manual_fin">Se terminó la sincronización de datos</string>
     <string name="loyalmaker_logo">Logo LoyalMaker.com</string>
     <string name="comenzar">Comenzar</string>
 

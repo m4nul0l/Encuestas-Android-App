@@ -56,6 +56,8 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 					EncuestasResult.class, EncuestaItem.class);
 			EncuestasSyncHelper.sincronizarTabla("preguntas", device, getContext(),
 					PreguntasResult.class, PreguntaItem.class);
+			// Sincronizo los assets (imagenes) de las encuestas (logo)
+			EncuestasSyncHelper.sincronizarAssetsEncuestas(getContext());
 		}
 		
 		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getContext());

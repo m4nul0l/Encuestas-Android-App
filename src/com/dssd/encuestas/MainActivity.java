@@ -19,11 +19,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +40,19 @@ public class MainActivity extends Activity {
 	View contentView;
 	EncuestaManager encuestaManager;
 	
+	transient boolean informarFinSincro = false;
+	
+	static final float IMAGEN_EMPRESA_WIDTH = 0.3f;
+	static final float IMAGEN_LOYALMAKER_WIDTH = 0.4f;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		contentView = getLayoutInflater().inflate(R.layout.activity_main, null);
 		setContentView(contentView);
+		
+		setTemplate();
 		
 		String device = AppConfig.getInstance(this).getDevice();
 		if(device == null) {
@@ -52,9 +63,22 @@ public class MainActivity extends Activity {
 		encuestaManager = new EncuestaManager(this);
 	}
 	
+	public void setTemplate() {
+		//TemplateUtils.setSizePercentage(findViewById(R.id.textViewBienvenida), 0.8f, 0.5f);
+		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewBienvenida), 0.0735f);
+		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewComenzar), 0.25f);
+		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), IMAGEN_LOYALMAKER_WIDTH);
+		/*TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewEmpresa), 0.50f);*/
+	}
+	
 	BroadcastReceiver syncReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			if(informarFinSincro) {
+				Toast.makeText(MainActivity.this, R.string.sincro_manual_fin, Toast.LENGTH_SHORT).show();
+				informarFinSincro = false;
+			}
+			
 			encuestas = encuestaManager.getEncuestas();
 			if(encuestas.size() == 0) {
 				Handler mainHandler = new Handler(context.getMainLooper());
@@ -84,7 +108,10 @@ public class MainActivity extends Activity {
 		
 		encuestas = encuestaManager.getEncuestas();
 		if(encuestas.size() == 0) {
-			noDataWaitProgressDialog = ProgressDialog.show(this, "Sincronizando", "Por favor espere...", true, true, new DialogInterface.OnCancelListener() {
+			String sincronizando = getResources().getString(R.string.sincronizando);
+			String porFavorEspere = getResources().getString(R.string.por_favor_espere);
+			
+			noDataWaitProgressDialog = ProgressDialog.show(this, sincronizando, porFavorEspere, true, true, new DialogInterface.OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface dialog) {
 					finish();
@@ -118,6 +145,20 @@ public class MainActivity extends Activity {
 			}
 			
 			TemplateUtils.setDefaultBackground(this, encuesta);
+			
+			String imagen = encuesta.getLogo();
+			Bitmap bitmap = TemplateUtils.loadImage(this, imagen);
+			if(bitmap != null) {
+				ImageView iv = (ImageView) findViewById(R.id.imageViewEmpresa);
+				
+				Point size = TemplateUtils.getScreenPercentage(this, IMAGEN_EMPRESA_WIDTH, -1);
+				int newHeight = size.x * bitmap.getHeight() / bitmap.getWidth();
+				bitmap = Bitmap.createScaledBitmap(bitmap, size.x, newHeight, false);
+				
+				iv.setImageBitmap(bitmap);
+				iv.setBackgroundColor(Color.TRANSPARENT);
+				//TemplateUtils.setWidthPercentage(iv, 0.40f);
+			}
 		}
 	}
 	
@@ -132,9 +173,7 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_force_sync:
-			//String xml = DeviceInfoHelper.getInstance(this).getDeviceInfoXML();
-			//System.out.println(xml);
-			//testSync();
+			informarFinSincro = true;
 			manualSync();
 			return true;
 
@@ -155,8 +194,6 @@ public class MainActivity extends Activity {
 		
 		return super.onTouchEvent(event);
 	}
-	
-	
 	
 	
 	public static final String AUTHORITY = "com.loyalmaker.datasync.provider";

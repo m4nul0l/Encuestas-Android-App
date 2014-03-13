@@ -78,7 +78,7 @@ public class DeviceInfoHelper {
     	deviceMap.put("model", getModel());
     	deviceMap.put("product", getProduct());
     	deviceMap.put("serial", getProduct());
-    	deviceMap.put("display-size", getDisplaySize());
+    	deviceMap.put("display-size", getDisplaySizeString());
     	
     	return deviceMap;
     }
@@ -123,7 +123,12 @@ public class DeviceInfoHelper {
    		return android.os.Build.SERIAL;
     }
     
-    public String getDisplaySize() {
+    public String getDisplaySizeString() {
+    	Point size = getDisplaySize();
+    	return "" + size.x + "x" + size.y;
+    }
+    
+    public Point getDisplaySize() {
     	WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     	Display display = wm.getDefaultDisplay();
     	
@@ -144,7 +149,7 @@ public class DeviceInfoHelper {
 			size.y = tmp;
 		}
     	
-    	return "" + size.x + "x" + size.y;
+    	return size;
     }
     
     @SuppressWarnings("deprecation")

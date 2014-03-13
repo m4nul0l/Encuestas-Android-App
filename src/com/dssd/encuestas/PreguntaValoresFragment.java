@@ -1,15 +1,12 @@
 package com.dssd.encuestas;
 
-import java.io.File;
 import java.util.List;
 
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.TipoPregunta;
 import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -66,12 +63,9 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		for (TipoPreguntaOpcion opcion : opciones) {
 			View newView = null;
 			String imagen = opcion.getImagen();
-			if(imagen != null) {
-				File dir = getActivity().getDir("ratings", Context.MODE_PRIVATE);
-				File file = new File(dir, imagen);
-				
-				Bitmap bitmap = BitmapFactory.decodeFile(file.toString());
-				
+			
+			Bitmap bitmap = TemplateUtils.loadImageRatings(getActivity(), imagen);
+			if(bitmap != null) {
 				ImageButton b = new ImageButton(getActivity());
 				b.setImageBitmap(bitmap);
 				b.setBackgroundColor(Color.TRANSPARENT);

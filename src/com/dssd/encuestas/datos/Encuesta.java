@@ -80,4 +80,8 @@ public class Encuesta {
 	public void setColorInferior(String colorInferior) {
 		this.colorInferior = colorInferior;
 	}
+
+	public String getLogo() {
+		return logo;
+	}
 }

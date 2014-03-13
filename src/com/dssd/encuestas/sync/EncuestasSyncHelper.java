@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.dssd.encuestas.DBHelper;
+import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 import com.dssd.encuestas.webservices.ItemsResult;
@@ -96,6 +97,18 @@ public class EncuestasSyncHelper {
 		String path = "ratings";
 		for (TipoPreguntaOpcion opcion : opciones) {
 			String imgName = opcion.getImagen();
+			if(imgName != null && imgName.trim().length() > 0)
+				sincronizarAsset(path, imgName, context);
+		}
+	}
+	
+	public static void sincronizarAssetsEncuestas(Context context) {
+		EncuestaManager em = new EncuestaManager(context);
+		List<Encuesta> encuestas = em.getEncuestas();
+		em.close();
+		String path = "";
+		for (Encuesta encuesta : encuestas) {
+			String imgName = encuesta.getLogo();
 			if(imgName != null && imgName.trim().length() > 0)
 				sincronizarAsset(path, imgName, context);
 		}
