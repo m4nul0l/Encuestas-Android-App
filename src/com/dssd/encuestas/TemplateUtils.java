@@ -5,14 +5,20 @@ import java.io.File;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +27,8 @@ import com.dssd.encuestas.info.DeviceInfoHelper;
 import com.dssd.encuestas.templates.TwoColorDrawable;
 
 public class TemplateUtils {
+	
+	static final float GLOBAL_TEXT_SIZE = 0.0735f;
 	
 	public static View getContentView(Activity activity) {
 		View contentView = activity.findViewById(android.R.id.content);
@@ -135,7 +143,10 @@ public class TemplateUtils {
 			File dir = context.getDir(path, Context.MODE_PRIVATE);
 			File file = new File(dir, image);
 			
-			Bitmap bitmap = BitmapFactory.decodeFile(file.toString());
+			Options options = new BitmapFactory.Options();
+		    options.inScaled = false;			
+			Bitmap bitmap = BitmapFactory.decodeFile(file.toString(), options);
+			
 			return bitmap;
 		}
 		return null;
@@ -147,5 +158,39 @@ public class TemplateUtils {
 	
 	public static Bitmap loadImageRatings(Context context, String image) {
 		return loadImage(context, "ratings", image);
+	}
+	
+	public static Bitmap resizeBitmap(Bitmap bitmap, Context context, float width) {
+		Point size = TemplateUtils.getScreenPercentage(context, width, -1);
+		int newWidth = size.x;
+		int newHeight = size.x * bitmap.getHeight() / bitmap.getWidth();
+		//return Bitmap.createScaledBitmap(bitmap, size.x, newHeight, false);
+		
+		Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Config.ARGB_8888);
+
+		float ratioX = newWidth / (float) bitmap.getWidth();
+		float ratioY = newHeight / (float) bitmap.getHeight();
+		float middleX = newWidth / 2.0f;
+		float middleY = newHeight / 2.0f;
+
+		Matrix scaleMatrix = new Matrix();
+		scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+		Canvas canvas = new Canvas(scaledBitmap);
+		canvas.setMatrix(scaleMatrix);
+		canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));		
+		
+		return scaledBitmap;
+	}
+	
+	public static void setLogoEmpresa(Context context, Encuesta encuesta, ImageView iv, float width) {
+		String imagen = encuesta.getLogo();
+		Bitmap bitmap = TemplateUtils.loadImage(context, imagen);
+		if(bitmap != null) {
+			bitmap = TemplateUtils.resizeBitmap(bitmap, context, width);
+			
+			iv.setImageBitmap(bitmap);
+			iv.setBackgroundColor(Color.TRANSPARENT);
+		}
 	}
 }

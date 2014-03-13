@@ -63,6 +63,10 @@ public class EncuestaManager {
 		return refreshObject(this, tipoPregunta);
 	}
 	
+	public Encuesta refreshEncuesta(Encuesta encuesta) {
+		return refreshObject(this, encuesta);
+	}
+	
 	public void close() {
 		if(dbHelper != null) {
 			OpenHelperManager.releaseHelper();

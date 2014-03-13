@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +64,7 @@ public class MainActivity extends Activity {
 	
 	public void setTemplate() {
 		//TemplateUtils.setSizePercentage(findViewById(R.id.textViewBienvenida), 0.8f, 0.5f);
-		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewBienvenida), 0.0735f);
+		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewBienvenida), TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewComenzar), 0.25f);
 		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), IMAGEN_LOYALMAKER_WIDTH);
 		/*TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewEmpresa), 0.50f);*/
@@ -151,9 +150,11 @@ public class MainActivity extends Activity {
 			if(bitmap != null) {
 				ImageView iv = (ImageView) findViewById(R.id.imageViewEmpresa);
 				
-				Point size = TemplateUtils.getScreenPercentage(this, IMAGEN_EMPRESA_WIDTH, -1);
+				bitmap = TemplateUtils.resizeBitmap(bitmap, this, IMAGEN_EMPRESA_WIDTH);
+				
+				/*Point size = TemplateUtils.getScreenPercentage(this, IMAGEN_EMPRESA_WIDTH, -1);
 				int newHeight = size.x * bitmap.getHeight() / bitmap.getWidth();
-				bitmap = Bitmap.createScaledBitmap(bitmap, size.x, newHeight, false);
+				bitmap = Bitmap.createScaledBitmap(bitmap, size.x, newHeight, false);*/
 				
 				iv.setImageBitmap(bitmap);
 				iv.setBackgroundColor(Color.TRANSPARENT);
