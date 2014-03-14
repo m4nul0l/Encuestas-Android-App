@@ -26,5 +26,6 @@
     <string name="sincro_manual_fin">Se terminó la sincronización de datos</string>
     <string name="loyalmaker_logo">Logo LoyalMaker.com</string>
     <string name="comenzar">Comenzar</string>
+    <string name="boton_siguiente">Siguiente</string>
 
 </resources>

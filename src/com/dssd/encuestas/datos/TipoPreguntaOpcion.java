@@ -15,30 +15,31 @@ public class TipoPreguntaOpcion {
 	String valor;
 	
 	@DatabaseField
-	String imagen;
+	String imagenDefault;
+
+	@DatabaseField
+	String imagenPresionada;
+
+	@DatabaseField
+	String imagenSeleccionada;
 
 	public TipoPregunta getTipoPregunta() {
 		return tipoPregunta;
-	}
-
-	public void setTipoPregunta(TipoPregunta tipoPregunta) {
-		this.tipoPregunta = tipoPregunta;
 	}
 
 	public String getValor() {
 		return valor;
 	}
 
-	public void setValor(String valor) {
-		this.valor = valor;
+	public String getImagenDefault() {
+		return imagenDefault;
 	}
 
-	public String getImagen() {
-		return imagen;
+	public String getImagenPresionada() {
+		return imagenPresionada;
 	}
 
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
+	public String getImagenSeleccionada() {
+		return imagenSeleccionada;
 	}
-
 }

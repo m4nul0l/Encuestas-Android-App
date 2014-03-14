@@ -55,8 +55,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:scaleType="centerInside"
         tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/textViewProgreso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp" />
+
+    <ImageView
+        android:id="@+id/imageViewSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:contentDescription="@string/boton_siguiente"
+        android:src="@drawable/boton_siguiente" />
 
 </RelativeLayout>

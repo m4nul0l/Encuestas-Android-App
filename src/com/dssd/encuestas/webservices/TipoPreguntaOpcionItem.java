@@ -18,5 +18,11 @@ public class TipoPreguntaOpcionItem {
 	String descripcion;
 	
 	@Element(required=false)
-	String imagen;
+	String imagen_default;
+	
+	@Element(required=false)
+	String imagen_presionada;
+	
+	@Element(required=false)
+	String imagen_seleccionada;
 }

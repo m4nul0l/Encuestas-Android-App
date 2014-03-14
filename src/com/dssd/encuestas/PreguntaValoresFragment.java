@@ -9,8 +9,11 @@ import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +29,8 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	
 	static final float IMAGEN_OPCION_WIDTH_GENERAL = 0.12f;
 	static final float IMAGEN_OPCION_WIDTH_2 = 0.2f;
+	
+	int selectedButton = -1;
 	
 	public PreguntaValoresFragment() {
 	}
@@ -58,45 +63,93 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		TemplateUtils.setFontPercentage((TextView)v.findViewById(R.id.textViewPregunta), TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewLogo), 0.2f);
 		TemplateUtils.setLogoEmpresa(getActivity(), getEncuesta(), (ImageView)v.findViewById(R.id.imageViewEmpresa), 0.2f);
+		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.09f);
 		
 		FrameLayout opcionesLayout = (FrameLayout) v.findViewById(R.id.frameLayoutOpciones);
 		
-		LinearLayout ll = new LinearLayout(getActivity());
+		final LinearLayout ll = new LinearLayout(getActivity());
 		opcionesLayout.addView(ll);
 		
-		View.OnClickListener l = new View.OnClickListener() {
+		View.OnClickListener selectListener = new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				PreguntasActivity activity = (PreguntasActivity) getActivity();
-				
-				//Respuesta r = new Respuesta();
-				//r.setPregunta(pregunta);
-				//r.setRespuesta();
-				
-				activity.responderPregunta(null);
+			public void onClick(View view) {
+				// al presionarse un boton, se "apagan" los otros, configurado con el estado "checked"
+				ImageButton selected = (ImageButton) view;
+				for (int i = 0; i < ll.getChildCount(); i++) {
+					ImageButton button = (ImageButton) ll.getChildAt(i);
+					if(button == selected) {
+						selectedButton = i;
+					} else {
+						button.getDrawable().setState(new int[]{android.R.attr.state_checked});
+					}
+				}
+				selected.getDrawable().setState(new int[]{});
+			}
+		};
+		View.OnTouchListener tl = new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// verifico si al tocar un botón, suelto el dedo fuera del mismo, entonces vuelvo a apagar el botón
+				if(event.getAction() == MotionEvent.ACTION_UP) {
+					if(selectedButton >= 0) {
+						ImageButton b = (ImageButton) ll.getChildAt(selectedButton);
+						if(b != v) {
+							ImageButton ib = (ImageButton) v;
+							ib.getDrawable().setState(new int[]{android.R.attr.state_checked});
+						}
+					}
+				}
+				return false;
 			}
 		};
 		
 		TipoPreguntaOpcion[] opciones = getOpciones();
+		float newButtonSize = IMAGEN_OPCION_WIDTH_GENERAL;
+		View.OnClickListener newButtonListener = selectListener;
+		switch(opciones.length) {
+		case 2:
+			newButtonSize = IMAGEN_OPCION_WIDTH_2;
+			//v.findViewById(R.id.imageViewSiguiente).setVisibility(View.GONE);
+			//newButtonListener = siguienteListener;
+			break;
+		default:
+			v.findViewById(R.id.imageViewSiguiente).setOnClickListener(siguienteListener);
+		}
+		
 		
 		for (TipoPreguntaOpcion opcion : opciones) {
 			View newView = null;
-			String imagen = opcion.getImagen();
 			
-			Bitmap bitmap = TemplateUtils.loadImageRatings(getActivity(), imagen);
-			if(bitmap != null) {
+			String imagenDefault = opcion.getImagenDefault();
+			Bitmap bitmapDefault = TemplateUtils.loadImageRatings(getActivity(), imagenDefault);
+			if(bitmapDefault != null) {
 				ImageButton b = new ImageButton(getActivity());
 				
-				float newSize = IMAGEN_OPCION_WIDTH_GENERAL;
-				switch(opciones.length) {
-				case 2:
-					newSize = IMAGEN_OPCION_WIDTH_2;
-					break;
+				String imagenPresionada = opcion.getImagenPresionada();
+				String imagenSeleccionada = opcion.getImagenSeleccionada();
+				Bitmap bitmapPresionado = TemplateUtils.loadImageRatings(getActivity(), imagenPresionada);
+				Bitmap bitmapSeleccionado = TemplateUtils.loadImageRatings(getActivity(), imagenSeleccionada);
+				
+				StateListDrawable stateListDrawable = new StateListDrawable();
+				
+				/* presionado */
+				if(bitmapPresionado != null) {
+					bitmapPresionado = TemplateUtils.resizeBitmap(bitmapPresionado, getActivity(), newButtonSize);
+					stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmapPresionado));
 				}
 				
-				bitmap = TemplateUtils.resizeBitmap(bitmap, getActivity(), newSize);
+				/* seleccionado - checked */
+				if(bitmapSeleccionado != null) {
+					bitmapSeleccionado = TemplateUtils.resizeBitmap(bitmapSeleccionado, getActivity(), newButtonSize);
+					stateListDrawable.addState(new int[]{android.R.attr.state_checked}, new BitmapDrawable(getResources(), bitmapSeleccionado));
+				}
 				
-				b.setImageBitmap(bitmap);
+				/* nivel inicial - imagen default */
+				bitmapDefault = TemplateUtils.resizeBitmap(bitmapDefault, getActivity(), newButtonSize);
+				stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmapDefault));
+				
+				//b.setImageBitmap(bitmapDefault);
+				b.setImageDrawable(stateListDrawable);
 				b.setBackgroundColor(Color.TRANSPARENT);
 				
 				newView = b;
@@ -108,10 +161,24 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 				newView = b;
 			}
 			
-			newView.setOnClickListener(l);
+			newView.setOnClickListener(newButtonListener);
+			newView.setOnTouchListener(tl);
 			ll.addView(newView);
 		}
 		
 		return v;
 	}
+	
+	View.OnClickListener siguienteListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			PreguntasActivity activity = (PreguntasActivity) getActivity();
+			
+			//Respuesta r = new Respuesta();
+			//r.setPregunta(pregunta);
+			//r.setRespuesta();
+			
+			activity.responderPregunta(null);
+		}
+	};
 }

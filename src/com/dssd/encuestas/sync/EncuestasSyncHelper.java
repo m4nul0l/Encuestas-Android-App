@@ -96,9 +96,17 @@ public class EncuestasSyncHelper {
 		em.close();
 		String path = "ratings";
 		for (TipoPreguntaOpcion opcion : opciones) {
-			String imgName = opcion.getImagen();
-			if(imgName != null && imgName.trim().length() > 0)
-				sincronizarAsset(path, imgName, context);
+			String imgDefaultName = opcion.getImagenDefault();
+			if(imgDefaultName != null && imgDefaultName.trim().length() > 0)
+				sincronizarAsset(path, imgDefaultName, context);
+			
+			String imgPresionadaName = opcion.getImagenPresionada();
+			if(imgPresionadaName != null && imgPresionadaName.trim().length() > 0)
+				sincronizarAsset(path, imgPresionadaName, context);
+			
+			String imgSeleccionadaName = opcion.getImagenSeleccionada();
+			if(imgSeleccionadaName != null && imgSeleccionadaName.trim().length() > 0)
+				sincronizarAsset(path, imgSeleccionadaName, context);
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package com.dssd.encuestas;
 
 import com.dssd.encuestas.datos.Pregunta;
+import com.dssd.encuestas.datos.Respuesta;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,5 +36,9 @@ public class PreguntaFragment extends Fragment {
 		if(pregunta != null && textViewPregunta != null) {
 			textViewPregunta.setText(pregunta.getPregunta());
 		}
+	}
+	
+	public Respuesta getRespuesta() {
+		return null;
 	}
 }
