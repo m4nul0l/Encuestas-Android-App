@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginBottom="48dp" >
-
     </FrameLayout>
 
     <LinearLayout
@@ -34,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5" />
-
     </LinearLayout>
 
     <ImageView
@@ -59,15 +57,6 @@
         android:scaleType="centerInside"
         tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/textViewProgreso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp" />
-
     <ImageView
         android:id="@+id/imageViewSiguiente"
         android:layout_width="wrap_content"
@@ -78,5 +67,29 @@
         android:layout_marginRight="20dp"
         android:contentDescription="@string/boton_siguiente"
         android:src="@drawable/boton_siguiente" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp" >
+
+        <TextView
+            android:id="@+id/textViewProgreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

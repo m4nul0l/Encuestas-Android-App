@@ -27,6 +27,7 @@ public class TiposPreguntasOpcionesResult extends ItemsResult<TipoPreguntaOpcion
 		cv.put("_id", item.idTipoOpcion);
 		cv.put("tipoPregunta_id", item.idTipoPregunta);
 		cv.put("valor", item.valor);
+		cv.put("descripcion", item.descripcion);
 		cv.put("imagenDefault", item.imagen_default);
 		cv.put("imagenPresionada", item.imagen_presionada);
 		cv.put("imagenSeleccionada", item.imagen_seleccionada);

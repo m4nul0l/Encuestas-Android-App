@@ -15,6 +15,9 @@ public class TipoPreguntaOpcion {
 	String valor;
 	
 	@DatabaseField
+	String descripcion;
+	
+	@DatabaseField
 	String imagenDefault;
 
 	@DatabaseField
@@ -29,6 +32,10 @@ public class TipoPreguntaOpcion {
 
 	public String getValor() {
 		return valor;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
 	}
 
 	public String getImagenDefault() {

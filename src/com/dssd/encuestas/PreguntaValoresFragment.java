@@ -21,7 +21,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PreguntaValoresFragment extends PreguntaFragment {
 	
@@ -65,10 +67,24 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		TemplateUtils.setLogoEmpresa(getActivity(), getEncuesta(), (ImageView)v.findViewById(R.id.imageViewEmpresa), 0.2f);
 		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.09f);
 		
+		/* progreso encuesta */
+		PreguntasActivity activity = (PreguntasActivity) getActivity();
+		int actual = activity.preguntaActual+1;
+		int total = activity.preguntas.length;
+		TextView textViewProgreso = (TextView) v.findViewById(R.id.textViewProgreso);
+		TemplateUtils.setFontPercentage(textViewProgreso, TemplateUtils.GLOBAL_TEXT_SIZE);
+		textViewProgreso.setText("" + actual + "/" + total);
+		ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+		progressBar.setMax(total);
+		progressBar.setProgress(actual);
+		
+		
 		FrameLayout opcionesLayout = (FrameLayout) v.findViewById(R.id.frameLayoutOpciones);
 		
 		final LinearLayout ll = new LinearLayout(getActivity());
 		opcionesLayout.addView(ll);
+		
+		final TipoPreguntaOpcion[] opciones = getOpciones();
 		
 		View.OnClickListener selectListener = new View.OnClickListener() {
 			@Override
@@ -84,6 +100,9 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 					}
 				}
 				selected.getDrawable().setState(new int[]{});
+				
+				/* muestro descripción al apretar el botón */
+				Toast.makeText(getActivity(), opciones[selectedButton].getDescripcion(), Toast.LENGTH_SHORT).show();
 			}
 		};
 		View.OnTouchListener tl = new View.OnTouchListener() {
@@ -103,7 +122,6 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			}
 		};
 		
-		TipoPreguntaOpcion[] opciones = getOpciones();
 		float newButtonSize = IMAGEN_OPCION_WIDTH_GENERAL;
 		View.OnClickListener newButtonListener = selectListener;
 		switch(opciones.length) {
