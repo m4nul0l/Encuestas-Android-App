@@ -190,13 +190,17 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	View.OnClickListener siguienteListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			PreguntasActivity activity = (PreguntasActivity) getActivity();
-			
-			//Respuesta r = new Respuesta();
-			//r.setPregunta(pregunta);
-			//r.setRespuesta();
-			
-			activity.responderPregunta(null);
+			if(selectedButton < 0) {
+				Toast.makeText(getActivity(), R.string.nada_seleccionado, Toast.LENGTH_SHORT).show();
+			} else {
+				PreguntasActivity activity = (PreguntasActivity) getActivity();
+				
+				//Respuesta r = new Respuesta();
+				//r.setPregunta(pregunta);
+				//r.setRespuesta();
+				
+				activity.responderPregunta(null);
+			}
 		}
 	};
 }

@@ -31,5 +31,6 @@
     <string name="form_email">Email</string>
     <string name="form_telefono">Teléfono</string>
     <string name="form_terminar">Terminar</string>
-
+    <string name="nada_seleccionado">Por favor seleccione una opción</string>
+    
 </resources>
