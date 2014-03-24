@@ -27,6 +27,7 @@
     <string name="loyalmaker_logo">Logo LoyalMaker.com</string>
     <string name="comenzar">Comenzar</string>
     <string name="boton_siguiente">Siguiente</string>
+    <string name="boton_terminar">Terminar</string>
     <string name="form_nombre">Nombre y Apellido</string>
     <string name="form_email">Email</string>
     <string name="form_telefono">Teléfono</string>
