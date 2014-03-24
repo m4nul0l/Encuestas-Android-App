@@ -119,6 +119,10 @@ public class EncuestasSyncHelper {
 			String imgName = encuesta.getLogo();
 			if(imgName != null && imgName.trim().length() > 0)
 				sincronizarAsset(path, imgName, context);
+			
+			String imgFondoName = encuesta.getImagenFondo();
+			if(imgFondoName != null && imgFondoName.trim().length() > 0)
+				sincronizarAsset(path, imgFondoName, context);
 		}
 	}
 	

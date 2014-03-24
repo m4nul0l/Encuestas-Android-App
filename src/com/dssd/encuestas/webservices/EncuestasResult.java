@@ -30,8 +30,8 @@ public class EncuestasResult extends ItemsResult<EncuestaItem> {
 		cv.put("mensajeBienvenida", item.mensajeBienvenida);
 		cv.put("mensajeDespedida", item.mensajeDespedida);
 		cv.put("letra", item.letra);
-		cv.put("colorSuperior", item.colorSuperior);
-		cv.put("colorInferior", item.colorInferior);
+		cv.put("imagenFondo", item.imagenFondo);
+		cv.put("colorFuente", item.colorFuente);
 		cv.put("logo", item.logo);
 		return cv;
 	}

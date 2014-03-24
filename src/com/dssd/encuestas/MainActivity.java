@@ -141,6 +141,7 @@ public class MainActivity extends Activity {
 			if(mensajeBienvenida != null && mensajeBienvenida.compareTo("") != 0) {
 				TextView tvb = (TextView) findViewById(R.id.textViewBienvenida);
 				tvb.setText(mensajeBienvenida);
+				TemplateUtils.setTextColor(tvb, encuesta);
 			}
 			
 			TemplateUtils.setDefaultBackground(this, encuesta);

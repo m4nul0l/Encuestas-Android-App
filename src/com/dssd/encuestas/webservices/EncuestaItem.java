@@ -27,10 +27,10 @@ public class EncuestaItem {
 	String letra;
 	
 	@Element(required=false)
-	String colorSuperior;
+	String imagenFondo;
 	
 	@Element(required=false)
-	String colorInferior;
+	String colorFuente;
 	
 	@Element(required=false)
 	String logo;

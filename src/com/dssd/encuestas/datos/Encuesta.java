@@ -26,10 +26,10 @@ public class Encuesta {
 	private String letra;
 	
 	@DatabaseField
-	private String colorSuperior;
+	private String imagenFondo;
 	
 	@DatabaseField
-	private String colorInferior;
+	private String colorFuente;
 	
 	@DatabaseField
 	private String logo;
@@ -65,22 +65,14 @@ public class Encuesta {
 		return mensajeDespedida;
 	}
 	
-	public String getColorSuperior() {
-		return colorSuperior;
+	public String getImagenFondo() {
+		return imagenFondo;
 	}
-
-	public void setColorSuperior(String colorSuperior) {
-		this.colorSuperior = colorSuperior;
+	
+	public String getColorFuente() {
+		return colorFuente;
 	}
-
-	public String getColorInferior() {
-		return colorInferior;
-	}
-
-	public void setColorInferior(String colorInferior) {
-		this.colorInferior = colorInferior;
-	}
-
+	
 	public String getLogo() {
 		return logo;
 	}

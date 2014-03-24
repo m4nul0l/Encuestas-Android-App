@@ -13,7 +13,9 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -24,7 +26,6 @@ import android.widget.TextView;
 
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.info.DeviceInfoHelper;
-import com.dssd.encuestas.templates.TwoColorDrawable;
 
 public class TemplateUtils {
 	
@@ -39,9 +40,10 @@ public class TemplateUtils {
 	}
 	
 	public static void setDefaultBackground(Activity activity, Encuesta encuesta) {
-		setTwoColorBackground(activity, null, encuesta);
+		setImageBackground(activity, null, encuesta);
 	}
-
+	
+	/*
 	public static void setTwoColorBackground(Activity activity, Encuesta encuesta) {
 		setTwoColorBackground(activity, null, encuesta);
 	}
@@ -64,6 +66,21 @@ public class TemplateUtils {
 		if(contentView == null)
 			contentView = getContentView(activity);
 		contentView.setBackgroundDrawable(colorDrawable);
+	}*/
+	
+	@SuppressWarnings("deprecation")
+	public static void setImageBackground(Activity activity, View contentView, Encuesta encuesta) {
+		String imagen = encuesta.getImagenFondo();
+		Bitmap bitmap = loadImage(activity, imagen);
+		if(bitmap != null) {
+			BitmapDrawable bd = new BitmapDrawable(activity.getResources(), bitmap);
+			bd.setFilterBitmap(true);
+			bd.setGravity(Gravity.FILL);
+			
+			if(contentView == null)
+				contentView = getContentView(activity);
+			contentView.setBackgroundDrawable(bd);
+		}
 	}
 	
 	public static void setWidthPercentage(View view, float width) {
@@ -136,6 +153,14 @@ public class TemplateUtils {
 		Point newSize = getScreenPercentage(view.getContext(), -1, height);
 		
 		view.setTextSize(TypedValue.COMPLEX_UNIT_PX, newSize.y);
+	}
+	
+	public static void setTextColor(TextView view, Encuesta encuesta) {
+		String colorFuente = encuesta.getColorFuente();
+		if(colorFuente != null && colorFuente.compareTo("") != 0) {
+			int color = Color.parseColor("#"+colorFuente);
+			view.setTextColor(color);
+		}
 	}
 	
 	public static Bitmap loadImage(Context context, String path, String image) {
