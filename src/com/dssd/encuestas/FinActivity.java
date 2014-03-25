@@ -24,6 +24,8 @@ public class FinActivity extends Activity {
 		if(list.size() > 0) {
 			Encuesta encuesta = list.get(0);
 			TemplateUtils.setLogoEmpresa(this, encuesta, (ImageView)findViewById(R.id.imageViewEmpresa), 0.2f);
+			
+			TemplateUtils.setTextColor((TextView)findViewById(R.id.textViewDespedida), encuesta);
 		}
 		
 		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewDespedida), TemplateUtils.GLOBAL_TEXT_SIZE);

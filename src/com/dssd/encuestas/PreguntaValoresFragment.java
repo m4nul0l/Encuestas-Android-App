@@ -62,7 +62,10 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		
-		TemplateUtils.setFontPercentage((TextView)v.findViewById(R.id.textViewPregunta), TemplateUtils.GLOBAL_TEXT_SIZE);
+		TextView tvPregunta = (TextView)v.findViewById(R.id.textViewPregunta);
+		TemplateUtils.setFontPercentage(tvPregunta, TemplateUtils.GLOBAL_TEXT_SIZE);
+		TemplateUtils.setTextColor(tvPregunta, getEncuesta());
+		
 		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewLogo), 0.2f);
 		TemplateUtils.setLogoEmpresa(getActivity(), getEncuesta(), (ImageView)v.findViewById(R.id.imageViewEmpresa), 0.2f);
 		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.09f);
