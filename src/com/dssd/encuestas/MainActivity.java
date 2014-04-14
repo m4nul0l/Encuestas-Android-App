@@ -22,7 +22,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -97,6 +96,7 @@ public class MainActivity extends Activity {
 					noDataWaitProgressDialog.dismiss();
 					noDataWaitProgressDialog = null;
 				}
+				normalSync();
 				initBienvenida();
 			}
 		}
@@ -106,7 +106,9 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		
-		LocalBroadcastManager.getInstance(this).registerReceiver(syncReceiver,
+		//LocalBroadcastManager.getInstance(this).registerReceiver(syncReceiver,
+		//		new IntentFilter(EncuestasSyncHelper.action_sync_end));
+		registerReceiver(syncReceiver,
 				new IntentFilter(EncuestasSyncHelper.action_sync_end));
 		
 		encuestas = encuestaManager.getEncuestas();
@@ -122,6 +124,7 @@ public class MainActivity extends Activity {
 			});
 			manualSync();
 		} else {
+			normalSync();
 			initBienvenida();
 		}
 	}
@@ -130,7 +133,8 @@ public class MainActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 		
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(syncReceiver);
+		//LocalBroadcastManager.getInstance(this).unregisterReceiver(syncReceiver);
+		unregisterReceiver(syncReceiver);
 		if(noDataWaitProgressDialog != null) {
 			noDataWaitProgressDialog.dismiss();
 			noDataWaitProgressDialog = null;
@@ -205,9 +209,17 @@ public class MainActivity extends Activity {
 	public static final String AUTHORITY = "com.loyalmaker.datasync.provider";
     public static final String ACCOUNT_TYPE = "loyalmaker.com";
     public static final String ACCOUNT = "dummyaccount";
-    Account mAccount;	
-	
-	public void manualSync() {
+    Account mAccount;
+    
+    public static final long MILLISECONDS_PER_SECOND = 1000L;
+    public static final long SECONDS_PER_MINUTE = 60L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 15L;
+    public static final long SYNC_INTERVAL =
+            SYNC_INTERVAL_IN_MINUTES *
+            SECONDS_PER_MINUTE *
+            MILLISECONDS_PER_SECOND;
+    
+    public Account getAccount() {
 		Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
         // Get an instance of the Android account manager
         AccountManager accountManager = (AccountManager) this.getSystemService(ACCOUNT_SERVICE);
@@ -231,11 +243,19 @@ public class MainActivity extends Activity {
              */
         	//Toast.makeText(this, "NOT added", Toast.LENGTH_SHORT).show();
         }
-        
+        return newAccount;
+    }
+    
+    public void normalSync() {
+        Bundle settingsBundle = new Bundle();
+        ContentResolver.addPeriodicSync(getAccount(), AUTHORITY, settingsBundle, SYNC_INTERVAL);
+    }
+	
+	public void manualSync() {
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        ContentResolver.requestSync(newAccount, AUTHORITY, settingsBundle);
+        ContentResolver.requestSync(getAccount(), AUTHORITY, settingsBundle);
         
         Toast.makeText(this, R.string.sincro_manual, Toast.LENGTH_SHORT).show();
 	}

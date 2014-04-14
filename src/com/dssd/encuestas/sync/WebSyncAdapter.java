@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
@@ -47,20 +46,32 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 			// Sincronizo TiposPreguntas y sus Opciones
 			EncuestasSyncHelper.sincronizarTabla("tipospreguntas", device, getContext(),
 					TiposPreguntasResult.class, TipoPreguntaItem.class);
+			Log.i("WebSyncAdapter", "onPerformSync: sync tipospreguntas");
+			
 			EncuestasSyncHelper.sincronizarTabla("tipospreguntas_opciones", device, getContext(),
 					TiposPreguntasOpcionesResult.class, TipoPreguntaOpcionItem.class);
+			Log.i("WebSyncAdapter", "onPerformSync: sync tipospreguntas_opciones");
+			
 			// Sincronizo los assets (imagenes) de los TiposPreguntasOpciones
 			EncuestasSyncHelper.sincronizarAssetsTiposPreguntasOpciones(getContext());
+			Log.i("WebSyncAdapter", "onPerformSync: sync started");
+			
 			// Sincronizo Encuestas y Preguntas
 			EncuestasSyncHelper.sincronizarTabla("encuestas", device, getContext(),
 					EncuestasResult.class, EncuestaItem.class);
+			Log.i("WebSyncAdapter", "onPerformSync: sync encuestas");
+			
 			EncuestasSyncHelper.sincronizarTabla("preguntas", device, getContext(),
 					PreguntasResult.class, PreguntaItem.class);
+			Log.i("WebSyncAdapter", "onPerformSync: sync preguntas");
+			
 			// Sincronizo los assets (imagenes) de las encuestas (logo)
 			EncuestasSyncHelper.sincronizarAssetsEncuestas(getContext());
 		}
+		Log.i("WebSyncAdapter", "onPerformSync: sync ended");
 		
-		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getContext());
-		lbm.sendBroadcast(new Intent(EncuestasSyncHelper.action_sync_end));
+		//LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getContext());
+		//lbm.sendBroadcast(new Intent(EncuestasSyncHelper.action_sync_end));
+		getContext().sendBroadcast(new Intent(EncuestasSyncHelper.action_sync_end));
 	}
 }
