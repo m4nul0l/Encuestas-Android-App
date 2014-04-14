@@ -31,6 +31,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	List<String> valores;
 	
 	static final float IMAGEN_OPCION_WIDTH_GENERAL = 0.12f;
+	static final float IMAGEN_OPCION_HEIGHT_GENERAL = 0.53f;
 	static final float IMAGEN_OPCION_WIDTH_2 = 0.2f;
 	
 	int selectedButton = -1;
@@ -130,11 +131,13 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			}
 		};
 		
-		float newButtonSize = IMAGEN_OPCION_WIDTH_GENERAL;
+		//float newButtonSize = IMAGEN_OPCION_WIDTH_GENERAL;
+		float newButtonHSize = IMAGEN_OPCION_HEIGHT_GENERAL;
 		View.OnClickListener newButtonListener = selectListener;
 		switch(opciones.length) {
 		case 2:
-			newButtonSize = IMAGEN_OPCION_WIDTH_2;
+			//newButtonSize = IMAGEN_OPCION_WIDTH_2;
+			//newButtonHSize = IMAGEN_OPCION_WIDTH_2;
 			//v.findViewById(R.id.imageViewSiguiente).setVisibility(View.GONE);
 			//newButtonListener = siguienteListener;
 			break;
@@ -160,18 +163,21 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 				
 				/* presionado */
 				if(bitmapPresionado != null) {
-					bitmapPresionado = TemplateUtils.resizeBitmap(bitmapPresionado, getActivity(), newButtonSize);
+					//bitmapPresionado = TemplateUtils.resizeBitmap(bitmapPresionado, getActivity(), newButtonSize);
+					bitmapPresionado = TemplateUtils.resizeBitmapH(bitmapPresionado, getActivity(), newButtonHSize);
 					stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmapPresionado));
 				}
 				
 				/* seleccionado - checked */
 				if(bitmapSeleccionado != null) {
-					bitmapSeleccionado = TemplateUtils.resizeBitmap(bitmapSeleccionado, getActivity(), newButtonSize);
+					//bitmapSeleccionado = TemplateUtils.resizeBitmap(bitmapSeleccionado, getActivity(), newButtonSize);
+					bitmapSeleccionado = TemplateUtils.resizeBitmapH(bitmapSeleccionado, getActivity(), newButtonHSize);
 					stateListDrawable.addState(new int[]{android.R.attr.state_checked}, new BitmapDrawable(getResources(), bitmapSeleccionado));
 				}
 				
 				/* nivel inicial - imagen default */
-				bitmapDefault = TemplateUtils.resizeBitmap(bitmapDefault, getActivity(), newButtonSize);
+				//bitmapDefault = TemplateUtils.resizeBitmap(bitmapDefault, getActivity(), newButtonSize);
+				bitmapDefault = TemplateUtils.resizeBitmapH(bitmapDefault, getActivity(), newButtonHSize);
 				stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmapDefault));
 				
 				//b.setImageBitmap(bitmapDefault);

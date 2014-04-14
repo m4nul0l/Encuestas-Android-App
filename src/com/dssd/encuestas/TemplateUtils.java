@@ -209,6 +209,28 @@ public class TemplateUtils {
 		return scaledBitmap;
 	}
 	
+	public static Bitmap resizeBitmapH(Bitmap bitmap, Context context, float height) {
+		Point size = TemplateUtils.getScreenPercentage(context, -1, height);
+		int newHeight = size.y;
+		int newWidth = size.y * bitmap.getWidth() / bitmap.getHeight();
+		
+		Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Config.ARGB_8888);
+		
+		float ratioX = newWidth / (float) bitmap.getWidth();
+		float ratioY = newHeight / (float) bitmap.getHeight();
+		float middleX = newWidth / 2.0f;
+		float middleY = newHeight / 2.0f;
+
+		Matrix scaleMatrix = new Matrix();
+		scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+		Canvas canvas = new Canvas(scaledBitmap);
+		canvas.setMatrix(scaleMatrix);
+		canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));		
+		
+		return scaledBitmap;
+	}
+	
 	public static void setLogoEmpresa(Context context, Encuesta encuesta, ImageView iv, float width) {
 		String imagen = encuesta.getLogo();
 		Bitmap bitmap = TemplateUtils.loadImage(context, imagen);
