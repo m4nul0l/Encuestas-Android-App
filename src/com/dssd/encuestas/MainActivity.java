@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,6 +64,9 @@ public class MainActivity extends Activity {
 	}
 	
 	public void setTemplate() {
+		Typeface tf = TemplateUtils.getFontRokkittRegular(this);
+		((TextView)findViewById(R.id.textViewBienvenida)).setTypeface(tf);
+		
 		//TemplateUtils.setSizePercentage(findViewById(R.id.textViewBienvenida), 0.8f, 0.5f);
 		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewBienvenida), TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewComenzar), 0.25f);

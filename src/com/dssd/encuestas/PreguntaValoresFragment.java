@@ -9,6 +9,7 @@ import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
@@ -62,7 +63,10 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		
+		Typeface tf = TemplateUtils.getFontRokkittRegular(getActivity());
+		
 		TextView tvPregunta = (TextView)v.findViewById(R.id.textViewPregunta);
+		tvPregunta.setTypeface(tf);
 		TemplateUtils.setFontPercentage(tvPregunta, TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setTextColor(tvPregunta, getEncuesta());
 		
@@ -75,6 +79,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		int actual = activity.preguntaActual+1;
 		int total = activity.preguntas.length;
 		TextView textViewProgreso = (TextView) v.findViewById(R.id.textViewProgreso);
+		textViewProgreso.setTypeface(tf);
 		TemplateUtils.setFontPercentage(textViewProgreso, TemplateUtils.GLOBAL_TEXT_SIZE);
 		textViewProgreso.setText("" + actual + "/" + total);
 		ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.progressBar);

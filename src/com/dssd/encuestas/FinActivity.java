@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
+import android.graphics.Typeface;
 
 public class FinActivity extends Activity {
 
@@ -27,6 +28,9 @@ public class FinActivity extends Activity {
 			
 			TemplateUtils.setTextColor((TextView)findViewById(R.id.textViewDespedida), encuesta);
 		}
+		
+		Typeface tf = TemplateUtils.getFontRokkittRegular(this);
+		((TextView)findViewById(R.id.textViewDespedida)).setTypeface(tf);
 		
 		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewDespedida), TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), 0.2f);

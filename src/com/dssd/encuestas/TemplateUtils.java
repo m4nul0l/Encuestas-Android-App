@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -217,5 +218,15 @@ public class TemplateUtils {
 			iv.setImageBitmap(bitmap);
 			iv.setBackgroundColor(Color.TRANSPARENT);
 		}
+	}
+	
+	public static Typeface getFontRokkittRegular(Context context) {
+		Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Rokkitt-Regular.ttf");
+		return typeface;
+	}
+	
+	public static Typeface getFontRokkittBold(Context context) {
+		Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Rokkitt-Bold.ttf");
+		return typeface;
 	}
 }
