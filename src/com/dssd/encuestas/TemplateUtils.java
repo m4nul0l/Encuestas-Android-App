@@ -1,13 +1,13 @@
 package com.dssd.encuestas;
 
 import java.io.File;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -31,6 +31,8 @@ import com.dssd.encuestas.info.DeviceInfoHelper;
 public class TemplateUtils {
 	
 	static final float GLOBAL_TEXT_SIZE = 0.0735f;
+	
+	static HashMap<String, Bitmap> cacheBitmaps = new HashMap<String, Bitmap>();
 	
 	public static View getContentView(Activity activity) {
 		View contentView = activity.findViewById(android.R.id.content);
@@ -72,7 +74,15 @@ public class TemplateUtils {
 	@SuppressWarnings("deprecation")
 	public static void setImageBackground(Activity activity, View contentView, Encuesta encuesta) {
 		String imagen = encuesta.getImagenFondo();
-		Bitmap bitmap = loadImage(activity, imagen);
+		
+		Point screenSize = DeviceInfoHelper.getInstance(activity).getDisplaySize();
+		if(screenSize.x < screenSize.y) {
+			int tmp = screenSize.x;
+			screenSize.x = screenSize.y;
+			screenSize.y = tmp;
+		}
+		
+		Bitmap bitmap = loadImage(activity, imagen, screenSize.x, screenSize.y);
 		if(bitmap != null) {
 			BitmapDrawable bd = new BitmapDrawable(activity.getResources(), bitmap);
 			bd.setFilterBitmap(true);
@@ -164,40 +174,126 @@ public class TemplateUtils {
 		}
 	}
 	
-	public static Bitmap loadImage(Context context, String path, String image) {
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+	
+	    if (height > reqHeight || width > reqWidth) {
+	
+	        final int halfHeight = height / 2;
+	        final int halfWidth = width / 2;
+	
+	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+	        // height and width larger than the requested height and width.
+	        while ((halfHeight / inSampleSize) > reqHeight
+	                && (halfWidth / inSampleSize) > reqWidth) {
+	            inSampleSize *= 2;
+	        }
+	    }
+	
+	    return inSampleSize;
+	}	
+	
+	public static Bitmap loadImageResize(Context context, String path, String image, int reqWidth, int reqHeight) {
 		if(image != null && image.trim().length() > 0) {
+			if(cacheBitmaps.containsKey(image)) {
+				return cacheBitmaps.get(image);
+			}
+			
 			File dir = context.getDir(path, Context.MODE_PRIVATE);
 			File file = new File(dir, image);
 			
-			Options options = new BitmapFactory.Options();
-		    options.inScaled = false;			
-			Bitmap bitmap = BitmapFactory.decodeFile(file.toString(), options);
+			// First decode with inJustDecodeBounds=true to check dimensions
+		    final BitmapFactory.Options options = new BitmapFactory.Options();
+		    options.inJustDecodeBounds = true;
+		    BitmapFactory.decodeFile(file.toString(), options);
+		    
+		    // Calculate inSampleSize
+		    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+		    
+		    // Decode bitmap with inSampleSize set
+		    options.inJustDecodeBounds = false;
+		    Bitmap bitmap = BitmapFactory.decodeFile(file.toString(), options);
+		    cacheBitmaps.put(image, bitmap);
+		    return bitmap;
+		}
+		return null;
+	}
+	public static Bitmap loadImageResizePercentage(Context context, String path, String image, float percWidth, float percHeight) {
+		if(image != null && image.trim().length() > 0) {
+			if(cacheBitmaps.containsKey(image)) {
+				return cacheBitmaps.get(image);
+			}
 			
-			return bitmap;
+			File dir = context.getDir(path, Context.MODE_PRIVATE);
+			File file = new File(dir, image);
+			
+			// First decode with inJustDecodeBounds=true to check dimensions
+		    final BitmapFactory.Options options = new BitmapFactory.Options();
+		    options.inJustDecodeBounds = true;
+		    BitmapFactory.decodeFile(file.toString(), options);
+		    
+		    int reqWidth = options.outWidth;
+		    int reqHeight = options.outHeight;
+		    
+			if(percWidth > 0) {
+				Point newSize = calculateSizeFromScreenWidthPercentage(context, options.outWidth, options.outHeight, percWidth);
+				reqWidth = newSize.x;
+				reqHeight = newSize.y;
+			}
+			if(percHeight > 0) {
+				Point newSize = calculateSizeFromScreenHeightPercentage(context, options.outWidth, options.outHeight, percHeight);
+				reqWidth = newSize.x;
+				reqHeight = newSize.y;
+			}
+		    
+		    // Calculate inSampleSize
+		    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+		    
+		    // Decode bitmap with inSampleSize set
+		    options.inJustDecodeBounds = false;
+		    Bitmap bitmap = BitmapFactory.decodeFile(file.toString(), options);			
+		    cacheBitmaps.put(image, bitmap);
+		    return bitmap;
 		}
 		return null;
 	}
 	
-	public static Bitmap loadImage(Context context, String image) {
-		return loadImage(context, "", image);
+	public static Bitmap loadImagePercResize(Context context, String image, float reqWidth, float reqHeight) {
+		return loadImageResizePercentage(context, "", image, reqWidth, reqHeight);
 	}
 	
-	public static Bitmap loadImageRatings(Context context, String image) {
-		return loadImage(context, "ratings", image);
+	public static Bitmap loadImage(Context context, String image, int reqWidth, int reqHeight) {
+		return loadImageResize(context, "", image, reqWidth, reqHeight);
+	}
+	
+	public static Bitmap loadImageRatingsPercResize(Context context, String image, float reqWidth, float reqHeight) {
+		return loadImageResizePercentage(context, "ratings", image, reqWidth, reqHeight);
+	}
+	
+	public static Bitmap loadImageRatings(Context context, String image, int reqWidth, int reqHeight) {
+		return loadImageResize(context, "ratings", image, reqWidth, reqHeight);
+	}
+	
+	public static Point calculateSizeFromScreenWidthPercentage(Context context, int width, int height, float widthPerc) {
+		Point size = TemplateUtils.getScreenPercentage(context, widthPerc, -1);
+		int newWidth = size.x;
+		int newHeight = size.x * height / width;
+		//return Bitmap.createScaledBitmap(bitmap, size.x, newHeight, false);
+		return new Point(newWidth, newHeight);
 	}
 	
 	public static Bitmap resizeBitmap(Bitmap bitmap, Context context, float width) {
-		Point size = TemplateUtils.getScreenPercentage(context, width, -1);
-		int newWidth = size.x;
-		int newHeight = size.x * bitmap.getHeight() / bitmap.getWidth();
-		//return Bitmap.createScaledBitmap(bitmap, size.x, newHeight, false);
+		Point newSize = calculateSizeFromScreenWidthPercentage(context, bitmap.getWidth(), bitmap.getHeight(), width);
 		
-		Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Config.ARGB_8888);
+		Bitmap scaledBitmap = Bitmap.createBitmap(newSize.x, newSize.y, Config.ARGB_8888);
 
-		float ratioX = newWidth / (float) bitmap.getWidth();
-		float ratioY = newHeight / (float) bitmap.getHeight();
-		float middleX = newWidth / 2.0f;
-		float middleY = newHeight / 2.0f;
+		float ratioX = newSize.x / (float) bitmap.getWidth();
+		float ratioY = newSize.y / (float) bitmap.getHeight();
+		float middleX = newSize.x / 2.0f;
+		float middleY = newSize.y / 2.0f;
 
 		Matrix scaleMatrix = new Matrix();
 		scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
@@ -207,6 +303,14 @@ public class TemplateUtils {
 		canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));		
 		
 		return scaledBitmap;
+	}
+	
+	public static Point calculateSizeFromScreenHeightPercentage(Context context, int width, int height, float heightPerc) {
+		Point size = TemplateUtils.getScreenPercentage(context, -1, heightPerc);
+		int newHeight = size.y;
+		int newWidth = size.y * width / height;
+		
+		return new Point(newWidth, newHeight);
 	}
 	
 	public static Bitmap resizeBitmapH(Bitmap bitmap, Context context, float height) {
@@ -233,7 +337,8 @@ public class TemplateUtils {
 	
 	public static void setLogoEmpresa(Context context, Encuesta encuesta, ImageView iv, float width) {
 		String imagen = encuesta.getLogo();
-		Bitmap bitmap = TemplateUtils.loadImage(context, imagen);
+		
+		Bitmap bitmap = TemplateUtils.loadImagePercResize(context, imagen, width, -1);
 		if(bitmap != null) {
 			bitmap = TemplateUtils.resizeBitmap(bitmap, context, width);
 			
