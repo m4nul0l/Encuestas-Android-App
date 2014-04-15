@@ -35,7 +35,7 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 	}
 
 	@Override
-	public void onPerformSync(Account account, Bundle extras, String authority,
+	public synchronized void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
 		
 		// TODO PONER proceso :sync en manifiesto!
@@ -54,7 +54,7 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 			
 			// Sincronizo los assets (imagenes) de los TipotasOpciones
 			EncuestasSyncHelper.sincronizarAssetsTiposPreguntasOpciones(getContext());
-			Log.i("WebSyncAdapter", "onPerformSync: sync started");
+			Log.i("WebSyncAdapter", "onPerformSync: sync assets preguntas");
 			
 			// Sincronizo Encuestas y Preguntas
 			EncuestasSyncHelper.sincronizarTabla("encuestas", device, getContext(),
@@ -65,8 +65,8 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 					PreguntasResult.class, PreguntaItem.class);
 			Log.i("WebSyncAdapter", "onPerformSync: sync preguntas");
 			
-			/*EncuestasSyncHelper.sincronizarRespuestas(device, getContext());
-			Log.i("WebSyncAdapter", "onPerformSync: sync respuestas");*/
+			EncuestasSyncHelper.sincronizarRespuestas(device, getContext());
+			Log.i("WebSyncAdapter", "onPerformSync: sync respuestas");
 			
 			// Sincronizo los assets (imagenes) de las encuestas (logo)
 			EncuestasSyncHelper.sincronizarAssetsEncuestas(getContext());

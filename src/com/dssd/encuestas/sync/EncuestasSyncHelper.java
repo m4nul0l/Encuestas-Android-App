@@ -9,9 +9,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
@@ -233,8 +234,10 @@ public class EncuestasSyncHelper {
 		content.add("idEncuestado", ""+idEncuestado);
 		content.add("idPregunta", ""+respuesta.getPregunta().get_id());
 		
-		java.sql.Timestamp ts = new Timestamp(respuesta.getFecha().getTime());
-		content.add("fecha", ts.toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSSSSS", Locale.US);
+		//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		String newDate = sdf.format(respuesta.getFecha());
+		content.add("fecha", newDate);
 		
 		content.add("respuesta", respuesta.getRespuesta());
 		
@@ -244,7 +247,6 @@ public class EncuestasSyncHelper {
 	}
 	
 	public static void sincronizarRespuestas(String device, Context context) {
-		/* sincronizo las respuestas con la Web */
 		EncuestaManager em = new EncuestaManager(context);
 		
 		Long idEncuesta = null;
@@ -253,33 +255,36 @@ public class EncuestasSyncHelper {
 		if(list.size() > 0) {
 			Encuesta encuesta = list.get(0);
 			idEncuesta = encuesta.get_id();
-		}		
-		
-		List<Encuestado> encuestados = em.getEncuestados();
-		for (Encuestado encuestado : encuestados) {
-			Long idEncuestado = nuevoEncuestado(device, idEncuesta, encuestado);
-			if(idEncuestado != null && idEncuestado > 0) {
-				ForeignCollection<Respuesta> respuestas = encuestado.getRespuestas();
-				for (Respuesta respuesta : respuestas) {
-					EncuestaManager.refreshObject(em, respuesta);
-					nuevaRespuesta(device, respuesta, idEncuestado);
-				}
-			}
 		}
 		
-		/* Borro las respuestas de la tablet */
-		try {
-			Dao<Encuestado, Long> daoEncuestado = EncuestaManager.getDao(em, Encuestado.class);
-			Dao<Respuesta, Long> daoRespuesta = EncuestaManager.getDao(em, Respuesta.class);
-			
+		List<Encuestado> encuestados = em.getEncuestados();
+		if(encuestados.size() > 0) {
+			/* sincronizo las respuestas con la Web */
 			for (Encuestado encuestado : encuestados) {
-				ForeignCollection<Respuesta> respuestas = encuestado.getRespuestas();
-					daoRespuesta.delete(respuestas);
+				Long idEncuestado = nuevoEncuestado(device, idEncuesta, encuestado);
+				if(idEncuestado != null && idEncuestado > 0) {
+					ForeignCollection<Respuesta> respuestas = encuestado.getRespuestas();
+					for (Respuesta respuesta : respuestas) {
+						EncuestaManager.refreshObject(em, respuesta);
+						nuevaRespuesta(device, respuesta, idEncuestado);
+					}
+				}
 			}
-			daoEncuestado.delete(encuestados);
-		} catch (SQLException e) {
-			Log.e("EncuestasSyncHelper", "sincronizarRespuestas: " + e.getLocalizedMessage());
-			e.printStackTrace();
+			
+			/* Borro las respuestas de la tablet */
+			try {
+				Dao<Encuestado, Long> daoEncuestado = EncuestaManager.getDao(em, Encuestado.class);
+				Dao<Respuesta, Long> daoRespuesta = EncuestaManager.getDao(em, Respuesta.class);
+				
+				for (Encuestado encuestado : encuestados) {
+					ForeignCollection<Respuesta> respuestas = encuestado.getRespuestas();
+					daoRespuesta.delete(respuestas);
+				}
+				daoEncuestado.delete(encuestados);
+			} catch (SQLException e) {
+				Log.e("EncuestasSyncHelper", "sincronizarRespuestas: " + e.getLocalizedMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 }
