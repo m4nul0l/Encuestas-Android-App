@@ -26,6 +26,10 @@ public class Pregunta {
 	@DatabaseField(foreign=true)
 	private TipoPregunta tipoPregunta;
 	
+	public long get_id() {
+		return _id;
+	}
+	
 	public Encuesta getEncuesta() {
 		return encuesta;
 	}

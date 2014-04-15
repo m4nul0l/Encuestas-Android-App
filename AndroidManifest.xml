@@ -60,7 +60,6 @@
         <service
             android:name="com.dssd.encuestas.sync.WebSyncService"
             android:exported="true"
-            android:process=":sync"
             tools:ignore="ExportedService" >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />

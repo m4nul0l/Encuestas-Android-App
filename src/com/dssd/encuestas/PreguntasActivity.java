@@ -5,7 +5,6 @@ import java.util.List;
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.Pregunta;
-import com.dssd.encuestas.datos.Respuesta;
 
 import android.os.Bundle;
 import android.app.AlertDialog;
@@ -19,9 +18,10 @@ import android.view.Menu;
 public class PreguntasActivity extends FragmentActivity {
 	
 	Pregunta[] preguntas;
+	String[] respuestas;
 	int preguntaActual = -1;
 	EncuestaManager encuestaManager;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +39,7 @@ public class PreguntasActivity extends FragmentActivity {
 			Encuesta encuesta = list.get(0);
 			TemplateUtils.setDefaultBackground(this, encuesta);
 			preguntas = encuesta.getPreguntasArray();
+			respuestas = new String[preguntas.length];
 		}
 	}
 	
@@ -96,12 +97,15 @@ public class PreguntasActivity extends FragmentActivity {
 			fragmentTransaction.commit();
 		} else {
 			// no hay mas preguntas
-			startActivity(new Intent(this, FinActivity.class));
+			Intent i = new Intent(this, FinActivity.class);
+			i.putExtra("respuestas", respuestas);
+			startActivity(i);
 			finish();
 		}
 	}
 	
-	public void responderPregunta(Respuesta respuesta) {
+	public void responderPregunta(String respuesta) {
+		respuestas[preguntaActual] = respuesta;
 		mostrarSiguientePregunta();
 	}
 }

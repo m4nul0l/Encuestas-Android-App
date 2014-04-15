@@ -249,6 +249,8 @@ public class MainActivity extends Activity {
     public void normalSync() {
         Bundle settingsBundle = new Bundle();
         ContentResolver.addPeriodicSync(getAccount(), AUTHORITY, settingsBundle, SYNC_INTERVAL);
+        
+        manualSync();
     }
 	
 	public void manualSync() {

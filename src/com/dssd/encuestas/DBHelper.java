@@ -6,7 +6,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.dssd.encuestas.datos.Encuesta;
+import com.dssd.encuestas.datos.Encuestado;
 import com.dssd.encuestas.datos.Pregunta;
+import com.dssd.encuestas.datos.Respuesta;
 import com.dssd.encuestas.datos.TipoPregunta;
 import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -31,8 +33,8 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 			//TableUtils.createTable(cs, Cliente.class);
 			TableUtils.createTable(cs, Encuesta.class);
 			TableUtils.createTable(cs, Pregunta.class);
-			//TableUtils.createTable(cs, Encuestado.class);
-			//TableUtils.createTable(cs, Respuesta.class);
+			TableUtils.createTable(cs, Encuestado.class);
+			TableUtils.createTable(cs, Respuesta.class);
 			
 			/* Encuesta de prueba */
 			/*Encuesta e1 = new Encuesta();
