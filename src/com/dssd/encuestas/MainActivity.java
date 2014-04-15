@@ -155,19 +155,13 @@ public class MainActivity extends Activity {
 			TemplateUtils.setDefaultBackground(this, encuesta);
 			
 			String imagen = encuesta.getLogo();
-			Bitmap bitmap = TemplateUtils.loadImage(this, imagen);
+			
+			Bitmap bitmap = TemplateUtils.loadImagePercResize(this, imagen, IMAGEN_EMPRESA_WIDTH, -1);
 			if(bitmap != null) {
 				ImageView iv = (ImageView) findViewById(R.id.imageViewEmpresa);
 				
-				bitmap = TemplateUtils.resizeBitmap(bitmap, this, IMAGEN_EMPRESA_WIDTH);
-				
-				/*Point size = TemplateUtils.getScreenPercentage(this, IMAGEN_EMPRESA_WIDTH, -1);
-				int newHeight = size.x * bitmap.getHeight() / bitmap.getWidth();
-				bitmap = Bitmap.createScaledBitmap(bitmap, size.x, newHeight, false);*/
-				
 				iv.setImageBitmap(bitmap);
 				iv.setBackgroundColor(Color.TRANSPARENT);
-				//TemplateUtils.setWidthPercentage(iv, 0.40f);
 			}
 		}
 	}

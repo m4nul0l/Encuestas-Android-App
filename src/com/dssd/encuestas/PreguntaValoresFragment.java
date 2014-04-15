@@ -150,44 +150,36 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			View newView = null;
 			
 			String imagenDefault = opcion.getImagenDefault();
-			Bitmap bitmapDefault = TemplateUtils.loadImageRatings(getActivity(), imagenDefault);
+			Bitmap bitmapDefault = TemplateUtils.loadImageRatingsPercResize(getActivity(), imagenDefault, -1, newButtonHSize);
 			if(bitmapDefault != null) {
 				ImageButton b = new ImageButton(getActivity());
 				
 				String imagenPresionada = opcion.getImagenPresionada();
 				String imagenSeleccionada = opcion.getImagenSeleccionada();
-				Bitmap bitmapPresionado = TemplateUtils.loadImageRatings(getActivity(), imagenPresionada);
-				Bitmap bitmapSeleccionado = TemplateUtils.loadImageRatings(getActivity(), imagenSeleccionada);
+				Bitmap bitmapPresionado = TemplateUtils.loadImageRatingsPercResize(getActivity(), imagenPresionada, -1, newButtonHSize);
+				Bitmap bitmapSeleccionado = TemplateUtils.loadImageRatingsPercResize(getActivity(), imagenSeleccionada, -1, newButtonHSize);
 				
 				StateListDrawable stateListDrawable = new StateListDrawable();
 				
 				/* presionado */
 				if(bitmapPresionado != null) {
-					//bitmapPresionado = TemplateUtils.resizeBitmap(bitmapPresionado, getActivity(), newButtonSize);
-					bitmapPresionado = TemplateUtils.resizeBitmapH(bitmapPresionado, getActivity(), newButtonHSize);
 					stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmapPresionado));
 				}
 				
 				/* seleccionado - checked */
 				if(bitmapSeleccionado != null) {
-					//bitmapSeleccionado = TemplateUtils.resizeBitmap(bitmapSeleccionado, getActivity(), newButtonSize);
-					bitmapSeleccionado = TemplateUtils.resizeBitmapH(bitmapSeleccionado, getActivity(), newButtonHSize);
 					stateListDrawable.addState(new int[]{android.R.attr.state_checked}, new BitmapDrawable(getResources(), bitmapSeleccionado));
 				}
 				
 				/* nivel inicial - imagen default */
-				//bitmapDefault = TemplateUtils.resizeBitmap(bitmapDefault, getActivity(), newButtonSize);
-				bitmapDefault = TemplateUtils.resizeBitmapH(bitmapDefault, getActivity(), newButtonHSize);
 				stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmapDefault));
 				
-				//b.setImageBitmap(bitmapDefault);
 				b.setImageDrawable(stateListDrawable);
 				b.setBackgroundColor(Color.TRANSPARENT);
 				
 				newView = b;
 			} else {
 				Button b = (Button) inflater.inflate(R.layout.opciones_valores_button, opcionesLayout, false);
-				//Button b = new Button(getActivity());
 				b.setText(opcion.getValor());
 				
 				newView = b;
