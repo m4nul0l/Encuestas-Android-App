@@ -5,9 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -138,14 +138,17 @@ public class EncuestasSyncHelper {
 		Uri fullURL = assetsBaseUri.buildUpon().appendPath(path).appendPath(fileName).build();
 		//Uri fullURL =  Uri.withAppendedPath(assetsBaseUri, assetURL);
 		
+		HttpURLConnection httpConnection = null;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 		try {
 			URL url = new URL(fullURL.toString());
-			URLConnection urlConnection = url.openConnection();
-			urlConnection.connect();
+			httpConnection = (HttpURLConnection) url.openConnection();
+			httpConnection.setRequestMethod("HEAD");
+			httpConnection.connect();
 			
-			long newAssetUnixEpochDate = urlConnection.getHeaderFieldDate("Last-Modified", new Date().getTime());
+			long newAssetUnixEpochDate = httpConnection.getHeaderFieldDate("Last-Modified", new Date().getTime());
+			httpConnection.disconnect();
 			
 			File dir = context.getDir(path, Context.MODE_PRIVATE);
 			File file = new File(dir, fileName);
@@ -162,8 +165,12 @@ public class EncuestasSyncHelper {
 			}
 			
 			if(needsUpdate) {
+				url = new URL(fullURL.toString());
+				httpConnection = (HttpURLConnection) url.openConnection();
+				httpConnection.connect();
+				
 				// update file
-				inputStream = urlConnection.getInputStream();
+				inputStream = httpConnection.getInputStream();
 				outputStream = new FileOutputStream(file);
 				
 				byte[] buf = new byte[16384];
@@ -175,6 +182,8 @@ public class EncuestasSyncHelper {
 				
 				inputStream.close();
 				outputStream.close();
+				
+				httpConnection.disconnect();
 			}
 			
 			return true;
@@ -188,6 +197,7 @@ public class EncuestasSyncHelper {
 			try {
 				if(inputStream != null) inputStream.close();
 				if(outputStream != null) outputStream.close();
+				if(httpConnection != null) httpConnection.disconnect();
 			} catch (IOException e) {
 				Log.e("EncuestasSyncHelper", "sincronizarAsset: " + e.getLocalizedMessage());
 				e.printStackTrace();
