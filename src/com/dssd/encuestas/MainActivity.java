@@ -202,16 +202,16 @@ public class MainActivity extends Activity {
 	
 	public static final String AUTHORITY = "com.loyalmaker.datasync.provider";
     public static final String ACCOUNT_TYPE = "loyalmaker.com";
-    public static final String ACCOUNT = "dummyaccount";
+    public static final String ACCOUNT = "LoyalMaker";
     Account mAccount;
     
-    public static final long MILLISECONDS_PER_SECOND = 1000L;
+    //public static final long MILLISECONDS_PER_SECOND = 1000L;
     public static final long SECONDS_PER_MINUTE = 60L;
     public static final long SYNC_INTERVAL_IN_MINUTES = 15L;
     public static final long SYNC_INTERVAL =
             SYNC_INTERVAL_IN_MINUTES *
-            SECONDS_PER_MINUTE *
-            MILLISECONDS_PER_SECOND;
+            SECONDS_PER_MINUTE;
+            //* MILLISECONDS_PER_SECOND;
     
     public Account getAccount() {
 		Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
