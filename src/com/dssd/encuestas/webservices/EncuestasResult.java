@@ -33,6 +33,9 @@ public class EncuestasResult extends ItemsResult<EncuestaItem> {
 		cv.put("imagenFondo", item.imagenFondo);
 		cv.put("colorFuente", item.colorFuente);
 		cv.put("logo", item.logo);
+		cv.put("tiempoReinicio", item.tiempoReinicio);
+		cv.put("datos", (item.datos > 0));
+		cv.put("comentarios", (item.comentarios > 0));
 		return cv;
 	}
 }

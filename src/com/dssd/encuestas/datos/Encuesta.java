@@ -34,6 +34,16 @@ public class Encuesta {
 	@DatabaseField
 	private String logo;
 	
+	@DatabaseField
+	String tiempoReinicio;
+	
+	@DatabaseField
+	boolean datos;
+	
+	@DatabaseField
+	boolean comentarios;
+	
+	
 	@ForeignCollectionField
 	ForeignCollection<Pregunta> preguntas;
 
@@ -79,5 +89,17 @@ public class Encuesta {
 	
 	public String getLogo() {
 		return logo;
+	}
+	
+	public String getTiempoReinicio() {
+		return tiempoReinicio;
+	}
+	
+	public boolean isDatos() {
+		return datos;
+	}
+	
+	public boolean isComentarios() {
+		return comentarios;
 	}
 }

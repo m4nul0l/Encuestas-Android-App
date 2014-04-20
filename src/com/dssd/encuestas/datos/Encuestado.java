@@ -52,6 +52,14 @@ public class Encuestado {
 		this.telefono = telefono;
 	}
 	
+	public String getComentario() {
+		return comentario;
+	}
+	
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+	
 	public ForeignCollection<Respuesta> getRespuestas() {
 		return respuestas;
 	}

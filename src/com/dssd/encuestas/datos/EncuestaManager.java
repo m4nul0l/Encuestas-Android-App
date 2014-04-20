@@ -72,13 +72,14 @@ public class EncuestaManager {
 		return getElements(this, Encuestado.class);
 	}
 	
-	public void guardarRespuestas(String nombre, String email, String telefono, Pregunta[] preguntas, String[] respuestas) {
+	public void guardarRespuestas(String nombre, String email, String telefono, String comentario, Pregunta[] preguntas, String[] respuestas) {
 		initDBHelper();
 		
 		Encuestado e = new Encuestado();
 		e.setNombre(nombre);
 		e.setEmail(email);
 		e.setTelefono(telefono);
+		e.setComentario(comentario);
 		
 		if(preguntas == null) {
 			List<Encuesta> list = getEncuestas();

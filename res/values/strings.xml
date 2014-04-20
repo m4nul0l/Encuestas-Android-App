@@ -37,5 +37,6 @@
     <string name="contrasena_incorrecta">Contraseña Incorrecta</string>
     <string name="salir">Salir</string>
     <string name="seleccione_launcher">Seleccione un Launcher</string>
+    <string name="form_comentarios">Comentarios</string>
     
 </resources>

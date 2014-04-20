@@ -227,6 +227,10 @@ public class EncuestasSyncHelper {
 			if(telefono != null && telefono.trim().length() > 0)
 				content.add("telefono", telefono);
 			
+			String comentarios = encuestado.getComentario();
+			if(comentarios != null && comentarios.trim().length() > 0)
+				content.add("comentarios", comentarios);
+			
 			Result result = restTemplate.postForObject(serverBaseUrlTemplate2, content, Result.class,
 					"encuestado", device);
 			return Long.valueOf(result.getResult());

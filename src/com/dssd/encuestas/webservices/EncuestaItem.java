@@ -34,4 +34,13 @@ public class EncuestaItem {
 	
 	@Element(required=false)
 	String logo;
+	
+	@Element(required=false)
+	String tiempoReinicio;
+	
+	@Element(required=false)
+	int datos;
+	
+	@Element(required=false)
+	int comentarios;
 }
