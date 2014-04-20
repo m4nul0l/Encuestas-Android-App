@@ -38,5 +38,6 @@
     <string name="salir">Salir</string>
     <string name="seleccione_launcher">Seleccione un Launcher</string>
     <string name="form_comentarios">Comentarios</string>
+    <string name="reiniciar_encuesta">Tiempo de espera agotado; reiniciando encuesta.</string>
     
 </resources>

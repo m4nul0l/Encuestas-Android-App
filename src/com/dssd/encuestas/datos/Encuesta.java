@@ -95,6 +95,16 @@ public class Encuesta {
 		return tiempoReinicio;
 	}
 	
+	public Integer getTiempoReinicioInteger() {
+		Integer res = null;
+		try {
+			res = Integer.parseInt(tiempoReinicio);
+		} catch(NumberFormatException e) {
+			return 0;
+		}
+		return res;
+	}
+	
 	public boolean isDatos() {
 		return datos;
 	}

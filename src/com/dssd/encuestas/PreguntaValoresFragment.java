@@ -112,6 +112,8 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 				
 				/* muestro descripción al apretar el botón */
 				Toast.makeText(getActivity(), opciones[selectedButton].getDescripcion(), Toast.LENGTH_SHORT).show();
+				
+				((PreguntasActivity)getActivity()).resetTimer();
 			}
 		};
 		View.OnTouchListener tl = new View.OnTouchListener() {

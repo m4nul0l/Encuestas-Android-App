@@ -6,6 +6,7 @@ import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.Pregunta;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
+import android.widget.Toast;
 
 public class PreguntasActivity extends FragmentActivity {
 	
@@ -21,6 +23,7 @@ public class PreguntasActivity extends FragmentActivity {
 	String[] respuestas;
 	int preguntaActual = -1;
 	EncuestaManager encuestaManager;
+	int tiempoReinicio = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class PreguntasActivity extends FragmentActivity {
 			TemplateUtils.setDefaultBackground(this, encuesta);
 			preguntas = encuesta.getPreguntasArray();
 			respuestas = new String[preguntas.length];
+			
+			tiempoReinicio = encuesta.getTiempoReinicioInteger();
 		}
 	}
 	
@@ -58,7 +63,7 @@ public class PreguntasActivity extends FragmentActivity {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					finish();
+					cancelarEncuesta();
 				}
 			})
 			.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -69,6 +74,53 @@ public class PreguntasActivity extends FragmentActivity {
 				}
 			});
 		builder.show();
+	}
+	
+	public void cancelarEncuesta() {
+		// al cancelar, guardo las respuestas hasta el momento
+		if(respuestas[0] != null) {
+			// solo guardo si al menos hay una respuesta
+			EncuestaManager em = new EncuestaManager(PreguntasActivity.this);
+			em.guardarRespuestas("", "", "", "", null, respuestas);
+		}
+		finish();
+	}
+	
+	class TimerReinicio extends AsyncTask<Integer, Void, Void> {
+		@Override
+		protected Void doInBackground(Integer... params) {
+			try {
+				Thread.sleep(params[0] * 1000);
+			} catch (InterruptedException e) {
+				//
+			}
+			return null;
+		}
+		
+		protected void onCancelled(Void result) {};
+		protected void onPostExecute(Void result) {
+			Toast.makeText(PreguntasActivity.this, R.string.reiniciar_encuesta, Toast.LENGTH_SHORT).show();
+			cancelarEncuesta();
+		};
+	};
+	TimerReinicio timer;
+	protected void startTimer() {
+		if(tiempoReinicio > 0) {
+			timer = new TimerReinicio();
+			timer.execute(tiempoReinicio);
+		}
+	}
+	protected void stopTimer() {
+		if(tiempoReinicio > 0) {
+			if(timer != null) {
+				timer.cancel(true);
+				timer = null;
+			}
+		}
+	}
+	protected void resetTimer() {
+		stopTimer();
+		startTimer();
 	}
 	
 	public Pregunta getSiguientePregunta() {
@@ -85,6 +137,8 @@ public class PreguntasActivity extends FragmentActivity {
 		Pregunta p = getSiguientePregunta();
 		
 		if(p != null) {
+			resetTimer();
+			
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			
@@ -96,6 +150,8 @@ public class PreguntasActivity extends FragmentActivity {
 			fragmentTransaction.addToBackStack(null);
 			fragmentTransaction.commit();
 		} else {
+			stopTimer();
+			
 			// no hay mas preguntas
 			Intent i = new Intent(this, FinActivity.class);
 			i.putExtra("respuestas", respuestas);
