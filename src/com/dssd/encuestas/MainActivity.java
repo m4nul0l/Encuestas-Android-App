@@ -241,8 +241,12 @@ public class MainActivity extends Activity {
     }
     
     public void normalSync() {
+    	Account account = getAccount();
+    	
+    	ContentResolver.setSyncAutomatically(account, AUTHORITY, true);
+    	
         Bundle settingsBundle = new Bundle();
-        ContentResolver.addPeriodicSync(getAccount(), AUTHORITY, settingsBundle, SYNC_INTERVAL);
+        ContentResolver.addPeriodicSync(account, AUTHORITY, settingsBundle, SYNC_INTERVAL);
     }
 	
 	public void manualSync() {
