@@ -33,5 +33,9 @@
     <string name="form_telefono">Teléfono</string>
     <string name="form_terminar">Terminar</string>
     <string name="nada_seleccionado">Por favor seleccione una opción</string>
+    <string name="contrasena_ingresar">Ingrese Contraseña</string>
+    <string name="contrasena_incorrecta">Contraseña Incorrecta</string>
+    <string name="salir">Salir</string>
+    <string name="seleccione_launcher">Seleccione un Launcher</string>
     
 </resources>

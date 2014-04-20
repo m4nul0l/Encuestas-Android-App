@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -199,6 +201,36 @@ public class MainActivity extends Activity {
 		return super.onTouchEvent(event);
 	}
 	
+	@Override
+	public void onBackPressed() {
+		final EditText et = new EditText(this);
+		final String device = AppConfig.getInstance(this).getDevice();
+		final String password = new StringBuilder(device).reverse().toString();
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.contrasena_ingresar)
+		       .setTitle(R.string.salir)
+		       .setView(et)
+		       .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		    	   public void onClick(DialogInterface dialog, int id) {
+		    		   if(et.getText().toString().compareTo(password) == 0) {
+			    		   Intent i = new Intent(Intent.ACTION_MAIN);
+			    		   i.addCategory(Intent.CATEGORY_HOME);
+			    		   i.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+			    		   startActivity(Intent.createChooser(i, getResources().getString(R.string.seleccione_launcher)));
+		    		   } else {
+		    			   Toast.makeText(MainActivity.this, R.string.contrasena_incorrecta, Toast.LENGTH_SHORT).show();
+		    		   }
+		    	   }
+		       })
+		       .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   dialog.dismiss();
+		           }
+		       });		
+		AlertDialog dialog = builder.create();		
+		dialog.show();
+	}
 	
 	public static final String AUTHORITY = "com.loyalmaker.datasync.provider";
     public static final String ACCOUNT_TYPE = "loyalmaker.com";
