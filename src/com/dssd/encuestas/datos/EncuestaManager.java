@@ -2,6 +2,7 @@ package com.dssd.encuestas.datos;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -65,6 +66,67 @@ public class EncuestaManager {
 	
 	public Encuesta refreshEncuesta(Encuesta encuesta) {
 		return refreshObject(this, encuesta);
+	}
+	
+	public List<Encuestado> getEncuestados() {
+		return getElements(this, Encuestado.class);
+	}
+	
+	public void guardarRespuestas(String nombre, String email, String telefono, Pregunta[] preguntas, String[] respuestas) {
+		initDBHelper();
+		
+		Encuestado e = new Encuestado();
+		e.setNombre(nombre);
+		e.setEmail(email);
+		e.setTelefono(telefono);
+		
+		if(preguntas == null) {
+			List<Encuesta> list = getEncuestas();
+			if(list.size() > 0) {
+				Encuesta encuesta = list.get(0);
+				preguntas = encuesta.getPreguntasArray();
+			}
+		}
+		
+		try {
+			Dao<Encuestado, Long> dao = dbHelper.getDao(Encuestado.class);
+			dao.create(e);
+			
+			Dao<Respuesta, Long> daoResp = dbHelper.getDao(Respuesta.class);
+			
+			Date fecha = new Date();
+			
+			for (int i = 0; i < preguntas.length; i++) {
+				Pregunta pregunta = preguntas[i];
+				if(respuestas[i] != null) {
+					Respuesta r = new Respuesta();
+					r.setPregunta(pregunta);
+					r.setRespuesta(respuestas[i]);
+					r.setFecha(fecha);
+					r.setEncuestado(e);
+					
+					daoResp.create(r);
+				}
+			}
+			
+		} catch (SQLException ex) {
+			Log.e("EncuestaManager", "guardarRespuestas: " + ex.getLocalizedMessage());
+			ex.printStackTrace();
+		}
+		
+		close();
+	}
+	
+	public static <T> Dao<T, Long> getDao(EncuestaManager em, Class<T> object) {
+		em.initDBHelper();
+		try {
+			Dao<T, Long> dao = em.dbHelper.getDao(object);
+			return dao;
+		} catch (SQLException e) {
+			Log.e("EncuestaManager", "getDao: " + e.getLocalizedMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void close() {

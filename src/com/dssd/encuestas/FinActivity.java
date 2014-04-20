@@ -8,6 +8,7 @@ import com.dssd.encuestas.datos.EncuestaManager;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
@@ -62,7 +63,28 @@ public class FinActivity extends Activity {
 		}
 	}
 	
+	@Override
+	public void onBackPressed() {
+		guardar();
+		super.onBackPressed();
+	}
+	
 	public void terminar(View view) {
+		guardar();
 		finish();
+	}
+	
+	public void guardar() {
+		Bundle extras = getIntent().getExtras();
+		if(extras != null && extras.containsKey("respuestas")) {
+			String[] respuestas = extras.getStringArray("respuestas");
+			
+			String nombre = ((EditText)findViewById(R.id.editTextNombre)).getText().toString();
+			String email = ((EditText)findViewById(R.id.editTextEmail)).getText().toString();
+			String telefono = ((EditText)findViewById(R.id.editTextTelefono)).getText().toString();
+			
+			EncuestaManager em = new EncuestaManager(this);
+			em.guardarRespuestas(nombre, email, telefono, null, respuestas);
+		}
 	}
 }

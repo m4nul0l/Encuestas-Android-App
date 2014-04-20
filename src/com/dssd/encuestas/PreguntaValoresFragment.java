@@ -201,11 +201,16 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 			} else {
 				PreguntasActivity activity = (PreguntasActivity) getActivity();
 				
-				//Respuesta r = new Respuesta();
-				//r.setPregunta(pregunta);
-				//r.setRespuesta();
+				String valor = getOpciones()[selectedButton].getValor();
 				
-				activity.responderPregunta(null);
+				/*Respuesta r = new Respuesta();
+				r.setPregunta(pregunta);
+				r.setRespuesta(valor);
+				r.setFecha(new Date());*/
+				
+				//Toast.makeText(getActivity(), valor, Toast.LENGTH_SHORT).show();
+				
+				activity.responderPregunta(valor);
 			}
 		}
 	};

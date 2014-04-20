@@ -37,6 +37,10 @@ public class Encuesta {
 	@ForeignCollectionField
 	ForeignCollection<Pregunta> preguntas;
 
+	public Long get_id() {
+		return _id;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}

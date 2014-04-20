@@ -1,15 +1,5 @@
 package com.dssd.encuestas.sync;
 
-import com.dssd.encuestas.datos.AppConfig;
-import com.dssd.encuestas.webservices.EncuestaItem;
-import com.dssd.encuestas.webservices.EncuestasResult;
-import com.dssd.encuestas.webservices.PreguntaItem;
-import com.dssd.encuestas.webservices.PreguntasResult;
-import com.dssd.encuestas.webservices.TipoPreguntaItem;
-import com.dssd.encuestas.webservices.TipoPreguntaOpcionItem;
-import com.dssd.encuestas.webservices.TiposPreguntasResult;
-import com.dssd.encuestas.webservices.TiposPreguntasOpcionesResult;
-
 import android.accounts.Account;
 import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
@@ -19,6 +9,16 @@ import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.dssd.encuestas.datos.AppConfig;
+import com.dssd.encuestas.webservices.EncuestaItem;
+import com.dssd.encuestas.webservices.EncuestasResult;
+import com.dssd.encuestas.webservices.PreguntaItem;
+import com.dssd.encuestas.webservices.PreguntasResult;
+import com.dssd.encuestas.webservices.TipoPreguntaItem;
+import com.dssd.encuestas.webservices.TipoPreguntaOpcionItem;
+import com.dssd.encuestas.webservices.TiposPreguntasOpcionesResult;
+import com.dssd.encuestas.webservices.TiposPreguntasResult;
 
 public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -35,7 +35,7 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 	}
 
 	@Override
-	public void onPerformSync(Account account, Bundle extras, String authority,
+	public synchronized void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
 		
 		// TODO PONER proceso :sync en manifiesto!
@@ -52,9 +52,9 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 					TiposPreguntasOpcionesResult.class, TipoPreguntaOpcionItem.class);
 			Log.i("WebSyncAdapter", "onPerformSync: sync tipospreguntas_opciones");
 			
-			// Sincronizo los assets (imagenes) de los TiposPreguntasOpciones
+			// Sincronizo los assets (imagenes) de los TipotasOpciones
 			EncuestasSyncHelper.sincronizarAssetsTiposPreguntasOpciones(getContext());
-			Log.i("WebSyncAdapter", "onPerformSync: sync started");
+			Log.i("WebSyncAdapter", "onPerformSync: sync assets preguntas");
 			
 			// Sincronizo Encuestas y Preguntas
 			EncuestasSyncHelper.sincronizarTabla("encuestas", device, getContext(),
@@ -64,6 +64,9 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 			EncuestasSyncHelper.sincronizarTabla("preguntas", device, getContext(),
 					PreguntasResult.class, PreguntaItem.class);
 			Log.i("WebSyncAdapter", "onPerformSync: sync preguntas");
+			
+			EncuestasSyncHelper.sincronizarRespuestas(device, getContext());
+			Log.i("WebSyncAdapter", "onPerformSync: sync respuestas");
 			
 			// Sincronizo los assets (imagenes) de las encuestas (logo)
 			EncuestasSyncHelper.sincronizarAssetsEncuestas(getContext());
