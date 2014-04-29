@@ -205,7 +205,8 @@ public class MainActivity extends Activity {
 	public void onBackPressed() {
 		final EditText et = new EditText(this);
 		final String device = AppConfig.getInstance(this).getDevice();
-		final String password = new StringBuilder(device).reverse().toString();
+		//final String password = new StringBuilder(device).reverse().toString();
+		final String password = device;
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.contrasena_ingresar)
