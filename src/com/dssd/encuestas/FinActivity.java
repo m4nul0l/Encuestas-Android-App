@@ -16,6 +16,9 @@ import android.graphics.Typeface;
 
 public class FinActivity extends Activity {
 	
+	boolean botonTerminar = true;
+	boolean guardado = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,6 +39,10 @@ public class FinActivity extends Activity {
 			} else {
 				findViewById(R.id.entrevistadoDatos).setVisibility(View.GONE);
 				findViewById(R.id.entrevistadoComentarios).setVisibility(View.GONE);
+				if(!botonTerminar) {
+					findViewById(R.id.ImageButtonTerminar).setVisibility(View.GONE);
+				}
+				guardar();
 			}
 		}
 		
@@ -50,10 +57,12 @@ public class FinActivity extends Activity {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		/*if(event.getAction() == MotionEvent.ACTION_UP) {
-			finish();
-			return true;
-		}*/
+		if(!botonTerminar) {
+			if(event.getAction() == MotionEvent.ACTION_UP) {
+				finish();
+				return true;
+			}
+		}
 		
 		return super.onTouchEvent(event);
 	}
@@ -72,20 +81,21 @@ public class FinActivity extends Activity {
 		}
 	}
 	
-	@Override
-	public void onBackPressed() {
-		guardar();
-		super.onBackPressed();
+	public void terminar(View view) {
+		finish();
 	}
 	
-	public void terminar(View view) {
-		guardar();
-		finish();
+	@Override
+	protected void onDestroy() {
+		if(isFinishing()) {
+			guardar();
+		}
+		super.onDestroy();
 	}
 	
 	public void guardar() {
 		Bundle extras = getIntent().getExtras();
-		if(extras != null && extras.containsKey("respuestas")) {
+		if(!guardado && extras != null && extras.containsKey("respuestas")) {
 			String[] respuestas = extras.getStringArray("respuestas");
 			
 			String nombre = ((EditText)findViewById(R.id.editTextNombre)).getText().toString();
@@ -96,5 +106,6 @@ public class FinActivity extends Activity {
 			EncuestaManager em = new EncuestaManager(this);
 			em.guardarRespuestas(nombre, email, telefono, comentarios, null, respuestas);
 		}
+		guardado = true;
 	}
 }
