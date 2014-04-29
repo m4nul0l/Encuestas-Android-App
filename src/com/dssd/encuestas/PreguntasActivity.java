@@ -25,6 +25,8 @@ public class PreguntasActivity extends FragmentActivity {
 	EncuestaManager encuestaManager;
 	int tiempoReinicio = 0;
 	
+	boolean guardarRespuestasParciales = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,7 +80,7 @@ public class PreguntasActivity extends FragmentActivity {
 	
 	public void cancelarEncuesta() {
 		// al cancelar, guardo las respuestas hasta el momento
-		if(respuestas[0] != null) {
+		if(respuestas[0] != null && guardarRespuestasParciales) {
 			// solo guardo si al menos hay una respuesta
 			EncuestaManager em = new EncuestaManager(PreguntasActivity.this);
 			em.guardarRespuestas("", "", "", "", null, respuestas);
