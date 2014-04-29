@@ -66,7 +66,7 @@ public class Encuesta {
 	public Pregunta[] getPreguntasArray() {
 		return getPreguntas().toArray(new Pregunta[0]);
 	}
-
+	
 	public void setPreguntas(ForeignCollection<Pregunta> preguntas) {
 		this.preguntas = preguntas;
 	}
@@ -105,8 +105,16 @@ public class Encuesta {
 		return res;
 	}
 	
+	public void setDatos(boolean datos) {
+		this.datos = datos;
+	}
+	
 	public boolean isDatos() {
 		return datos;
+	}
+	
+	public void setComentarios(boolean comentarios) {
+		this.comentarios = comentarios;
 	}
 	
 	public boolean isComentarios() {

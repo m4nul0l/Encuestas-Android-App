@@ -18,6 +18,7 @@ public class FinActivity extends Activity {
 	
 	boolean botonTerminar = true;
 	boolean guardado = false;
+	boolean mostrarLogoLoyalMaker = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,11 @@ public class FinActivity extends Activity {
 			TemplateUtils.setLogoEmpresa(this, encuesta, (ImageView)findViewById(R.id.imageViewEmpresa), 0.2f);
 			
 			TemplateUtils.setTextColor((TextView)findViewById(R.id.textViewDespedida), encuesta);
+			
+			if(!botonTerminar) {
+				encuesta.setDatos(false);
+				encuesta.setComentarios(false);
+			}
 			
 			if(encuesta.isDatos()) {
 				findViewById(R.id.entrevistadoComentarios).setVisibility(View.GONE);
@@ -50,7 +56,12 @@ public class FinActivity extends Activity {
 		((TextView)findViewById(R.id.textViewDespedida)).setTypeface(tf);
 		
 		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewDespedida), TemplateUtils.GLOBAL_TEXT_SIZE);
-		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), 0.2f);
+		
+		if(mostrarLogoLoyalMaker) {
+			TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), 0.2f);
+		} else {
+			findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
+		}
 		
 		setMensajeDespedida();
 	}

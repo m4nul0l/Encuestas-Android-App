@@ -46,6 +46,8 @@ public class MainActivity extends Activity {
 	static final float IMAGEN_EMPRESA_WIDTH = 0.3f;
 	static final float IMAGEN_LOYALMAKER_WIDTH = 0.4f;
 	
+	boolean mostrarLogoLoyalMaker = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,8 +73,13 @@ public class MainActivity extends Activity {
 		//TemplateUtils.setSizePercentage(findViewById(R.id.textViewBienvenida), 0.8f, 0.5f);
 		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewBienvenida), TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewComenzar), 0.25f);
-		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), IMAGEN_LOYALMAKER_WIDTH);
 		/*TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewEmpresa), 0.50f);*/
+		
+		if(mostrarLogoLoyalMaker) {
+			TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), IMAGEN_LOYALMAKER_WIDTH);
+		} else {
+			findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
+		}
 	}
 	
 	BroadcastReceiver syncReceiver = new BroadcastReceiver() {

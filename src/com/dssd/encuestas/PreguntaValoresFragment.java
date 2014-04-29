@@ -37,6 +37,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	int selectedButton = -1;
 	
 	boolean botonSiguiente = true;
+	boolean mostrarLogoLoyalMaker = true;
 	
 	public PreguntaValoresFragment() {
 	}
@@ -73,7 +74,12 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		TemplateUtils.setFontPercentage(tvPregunta, TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setTextColor(tvPregunta, getEncuesta());
 		
-		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewLogo), 0.2f);
+		if(mostrarLogoLoyalMaker) {
+			TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewLogo), 0.2f);
+		} else {
+			v.findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
+		}
+		
 		TemplateUtils.setLogoEmpresa(getActivity(), getEncuesta(), (ImageView)v.findViewById(R.id.imageViewEmpresa), 0.2f);
 		
 		if(botonSiguiente) {
