@@ -36,6 +36,8 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	
 	int selectedButton = -1;
 	
+	boolean botonSiguiente = true;
+	
 	public PreguntaValoresFragment() {
 	}
 	
@@ -73,7 +75,13 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		
 		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewLogo), 0.2f);
 		TemplateUtils.setLogoEmpresa(getActivity(), getEncuesta(), (ImageView)v.findViewById(R.id.imageViewEmpresa), 0.2f);
-		TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.09f);
+		
+		if(botonSiguiente) {
+			TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.09f);
+			v.findViewById(R.id.imageViewSiguiente).setOnClickListener(siguienteListener);
+		} else {
+			v.findViewById(R.id.imageViewSiguiente).setVisibility(View.GONE);
+		}
 		
 		/* progreso encuesta */
 		PreguntasActivity activity = (PreguntasActivity) getActivity();
@@ -105,7 +113,9 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 					if(button == selected) {
 						selectedButton = i;
 					} else {
-						button.getDrawable().setState(new int[]{android.R.attr.state_checked});
+						if(botonSiguiente) {
+							button.getDrawable().setState(new int[]{android.R.attr.state_checked});
+						}
 					}
 				}
 				selected.getDrawable().setState(new int[]{});
@@ -114,6 +124,10 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 				Toast.makeText(getActivity(), opciones[selectedButton].getDescripcion(), Toast.LENGTH_SHORT).show();
 				
 				((PreguntasActivity)getActivity()).resetTimer();
+				
+				if(!botonSiguiente) {
+					responderPreguntaValores();
+				}
 			}
 		};
 		View.OnTouchListener tl = new View.OnTouchListener() {
@@ -136,17 +150,11 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		//float newButtonSize = IMAGEN_OPCION_WIDTH_GENERAL;
 		float newButtonHSize = IMAGEN_OPCION_HEIGHT_GENERAL;
 		View.OnClickListener newButtonListener = selectListener;
-		switch(opciones.length) {
+		/*switch(opciones.length) {
 		case 2:
-			//newButtonSize = IMAGEN_OPCION_WIDTH_2;
-			//newButtonHSize = IMAGEN_OPCION_WIDTH_2;
-			//v.findViewById(R.id.imageViewSiguiente).setVisibility(View.GONE);
-			//newButtonListener = siguienteListener;
 			break;
 		default:
-			v.findViewById(R.id.imageViewSiguiente).setOnClickListener(siguienteListener);
-		}
-		
+		}*/
 		
 		for (TipoPreguntaOpcion opcion : opciones) {
 			View newView = null;
@@ -195,24 +203,28 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		return v;
 	}
 	
+	public void responderPreguntaValores() {
+		PreguntasActivity activity = (PreguntasActivity) getActivity();
+		
+		String valor = getOpciones()[selectedButton].getValor();
+		
+		/*Respuesta r = new Respuesta();
+		r.setPregunta(pregunta);
+		r.setRespuesta(valor);
+		r.setFecha(new Date());*/
+		
+		//Toast.makeText(getActivity(), valor, Toast.LENGTH_SHORT).show();
+		
+		activity.responderPregunta(valor);
+	}
+	
 	View.OnClickListener siguienteListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			if(selectedButton < 0) {
 				Toast.makeText(getActivity(), R.string.nada_seleccionado, Toast.LENGTH_SHORT).show();
 			} else {
-				PreguntasActivity activity = (PreguntasActivity) getActivity();
-				
-				String valor = getOpciones()[selectedButton].getValor();
-				
-				/*Respuesta r = new Respuesta();
-				r.setPregunta(pregunta);
-				r.setRespuesta(valor);
-				r.setFecha(new Date());*/
-				
-				//Toast.makeText(getActivity(), valor, Toast.LENGTH_SHORT).show();
-				
-				activity.responderPregunta(valor);
+				responderPreguntaValores();
 			}
 		}
 	};
