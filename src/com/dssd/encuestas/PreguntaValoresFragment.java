@@ -38,6 +38,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	
 	boolean botonSiguiente = true;
 	boolean mostrarLogoLoyalMaker = true;
+	boolean invertirOrdenRespuestas = false;
 	
 	public PreguntaValoresFragment() {
 	}
@@ -49,6 +50,16 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		encuestaManager.refreshTipoPregunta(tipoPregunta);
 		
 		TipoPreguntaOpcion[] opcionesArray = tipoPregunta.getOpcionesArray();
+		
+		if(invertirOrdenRespuestas) {
+			TipoPreguntaOpcion[] newArray = new TipoPreguntaOpcion[opcionesArray.length];
+			
+			for(int x=0, y=opcionesArray.length-1; x<opcionesArray.length; x++, y--) {
+				newArray[x] = opcionesArray[y];
+			}
+			
+			opcionesArray = newArray;
+		}
 		
 		return opcionesArray;
 	}
