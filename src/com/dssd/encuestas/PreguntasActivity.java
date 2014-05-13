@@ -11,13 +11,12 @@ import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.widget.Toast;
 
-public class PreguntasActivity extends FragmentActivity {
+public class PreguntasActivity extends CollapsingStatusBarActivity {
 	
 	Pregunta[] preguntas;
 	String[] respuestas;

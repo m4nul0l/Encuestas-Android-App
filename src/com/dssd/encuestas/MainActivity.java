@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -32,7 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends CollapsingStatusBarActivity {
 	
 	ProgressDialog noDataWaitProgressDialog;
 	List<Encuesta> encuestas;
