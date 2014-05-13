@@ -3,6 +3,7 @@ package com.dssd.encuestas;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.WindowManager;
 
 public abstract class CollapsingStatusBarActivity extends FragmentActivity {
 	
@@ -18,6 +19,9 @@ public abstract class CollapsingStatusBarActivity extends FragmentActivity {
 			statusBarHiderAsyncTask = TemplateUtils.getStatusBarHiderAsyncTask(this);
 			statusBarHiderAsyncTask.execute();
 		}
+		
+		/* Impido que se apague la pantalla */
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 	
 	@Override
