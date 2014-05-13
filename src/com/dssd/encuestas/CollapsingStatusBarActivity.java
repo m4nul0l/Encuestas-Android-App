@@ -8,12 +8,16 @@ public abstract class CollapsingStatusBarActivity extends FragmentActivity {
 	
 	AsyncTask<Void, Void, Void> statusBarHiderAsyncTask;
 	
+	static boolean enableStatusBarHack = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		statusBarHiderAsyncTask = TemplateUtils.getStatusBarHiderAsyncTask(this);
-		statusBarHiderAsyncTask.execute();
+		if(enableStatusBarHack) {
+			statusBarHiderAsyncTask = TemplateUtils.getStatusBarHiderAsyncTask(this);
+			statusBarHiderAsyncTask.execute();
+		}
 	}
 	
 	@Override
@@ -24,7 +28,9 @@ public abstract class CollapsingStatusBarActivity extends FragmentActivity {
 	
 	@Override
 	protected void onDestroy() {
-		statusBarHiderAsyncTask.cancel(true);
+		if(enableStatusBarHack && statusBarHiderAsyncTask != null) {
+			statusBarHiderAsyncTask.cancel(true);
+		}
 		super.onDestroy();
 	}
 }
