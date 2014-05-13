@@ -23,7 +23,7 @@ public abstract class CollapsingStatusBarActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		TemplateUtils.hideSystemUI(this);
+		//TemplateUtils.hideSystemUI(this);
 	};
 	
 	@Override
