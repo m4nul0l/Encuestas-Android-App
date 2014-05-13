@@ -2,17 +2,13 @@ package com.dssd.encuestas;
 
 import java.util.List;
 
-import com.dssd.encuestas.datos.Encuesta;
-import com.dssd.encuestas.datos.EncuestaManager;
-import com.dssd.encuestas.datos.TipoPregunta;
-import com.dssd.encuestas.datos.TipoPreguntaOpcion;
-
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dssd.encuestas.datos.Encuesta;
+import com.dssd.encuestas.datos.EncuestaManager;
+import com.dssd.encuestas.datos.TipoPregunta;
+import com.dssd.encuestas.datos.TipoPreguntaOpcion;
 
 public class PreguntaValoresFragment extends PreguntaFragment {
 	
@@ -138,7 +139,9 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 				selected.getDrawable().setState(new int[]{});
 				
 				/* muestro descripción al apretar el botón */
-				Toast.makeText(getActivity(), opciones[selectedButton].getDescripcion(), Toast.LENGTH_SHORT).show();
+				Toast t = Toast.makeText(getActivity(), opciones[selectedButton].getDescripcion(), Toast.LENGTH_SHORT);
+				t.setGravity(Gravity.CENTER, 0, 0);
+				t.show();
 				
 				((PreguntasActivity)getActivity()).resetTimer();
 				
