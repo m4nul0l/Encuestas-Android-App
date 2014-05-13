@@ -83,7 +83,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		TemplateUtils.setLogoEmpresa(getActivity(), getEncuesta(), (ImageView)v.findViewById(R.id.imageViewEmpresa), 0.2f);
 		
 		if(botonSiguiente) {
-			TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.09f);
+			TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.144f);
 			v.findViewById(R.id.imageViewSiguiente).setOnClickListener(siguienteListener);
 		} else {
 			v.findViewById(R.id.imageViewSiguiente).setVisibility(View.GONE);
