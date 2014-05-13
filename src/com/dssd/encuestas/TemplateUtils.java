@@ -1,8 +1,11 @@
 package com.dssd.encuestas;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,6 +18,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -355,5 +360,62 @@ public class TemplateUtils {
 	public static Typeface getFontRokkittBold(Context context) {
 		Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Rokkitt-Bold.ttf");
 		return typeface;
+	}
+	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	public static void hideSystemUI(Activity activity) {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			View mDecorView = activity.getWindow().getDecorView();
+		    mDecorView.setSystemUiVisibility(
+		            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+		            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+		            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+		            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+		            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+		            //| View.SYSTEM_UI_FLAG_IMMERSIVE
+		            );
+		    
+		    ActionBar actionBar = activity.getActionBar();
+		    if(actionBar != null)
+		    	actionBar.hide();
+		}
+	}
+	
+	public static void collapseStatusBar(Context context) {
+		try {
+			Object service = context.getSystemService("statusbar");
+			Class<?> statusbarManager = Class
+					.forName("android.app.StatusBarManager");
+			
+			Method collapse = null;
+			try {
+				collapse = statusbarManager.getMethod("collapse");
+			} catch(Exception e) {
+				collapse = statusbarManager.getMethod("collapsePanels");
+			}
+			
+			if(collapse != null) {
+				collapse.setAccessible(true);
+				collapse.invoke(service);
+			}
+		} catch (Exception ex) {}
+	}
+	
+	public static AsyncTask<Void, Void, Void> getStatusBarHiderAsyncTask(Context c) {
+		final Context context = c;
+		AsyncTask<Void, Void, Void> t = new AsyncTask<Void, Void, Void>() {
+			@Override
+			protected Void doInBackground(Void... params) {
+				while(!isCancelled()) {
+					collapseStatusBar(context);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {}
+				}
+				
+				return null;
+			}
+		};
+		return t;
 	}
 }

@@ -11,10 +11,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.app.Activity;
 import android.graphics.Typeface;
 
-public class FinActivity extends Activity {
+public class FinActivity extends CollapsingStatusBarActivity {
 	
 	boolean botonTerminar = true;
 	boolean guardado = false;
