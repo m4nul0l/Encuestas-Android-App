@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
+import com.dssd.encuestas.sync.WebSyncHelper;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -115,6 +116,7 @@ public class FinActivity extends CollapsingStatusBarActivity {
 			
 			EncuestaManager em = new EncuestaManager(this);
 			em.guardarRespuestas(nombre, email, telefono, comentarios, null, respuestas);
+			WebSyncHelper.getInstance().requestSync(this);
 		}
 		guardado = true;
 	}

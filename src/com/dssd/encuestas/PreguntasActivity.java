@@ -5,6 +5,7 @@ import java.util.List;
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.datos.Pregunta;
+import com.dssd.encuestas.sync.WebSyncHelper;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ public class PreguntasActivity extends CollapsingStatusBarActivity {
 			// solo guardo si al menos hay una respuesta
 			EncuestaManager em = new EncuestaManager(PreguntasActivity.this);
 			em.guardarRespuestas("", "", "", "", null, respuestas);
+			WebSyncHelper.getInstance().requestSync(this);
 		}
 		finish();
 	}
