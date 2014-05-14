@@ -301,4 +301,34 @@ public class EncuestasSyncHelper {
 			}
 		}
 	}
+	
+	public static Long registroHeartbeat(String device, String valor, String mensaje) {
+		return registro(device, valor, 0, mensaje);
+	}
+	
+	public static Long registroBajaBateria(String device, String valor, String mensaje) {
+		return registro(device, valor, 1, mensaje);
+	}
+	
+	public static Long registro(String device, String valor, Integer tipoMensaje, String mensaje) {
+		try {
+			RestTemplate restTemplate = new RestTemplate(true);
+			
+			MultiValueMap<String, String> content = new LinkedMultiValueMap<String, String>(3);
+			if(valor != null && valor.trim().length() > 0)
+				content.add("valor", ""+valor);
+			
+			if(tipoMensaje != null)
+				content.add("tipoMensaje", tipoMensaje.toString());
+			
+			if(mensaje != null && mensaje.trim().length() > 0)
+				content.add("mensaje", mensaje);
+			
+			Result result = restTemplate.postForObject(serverBaseUrlTemplate2, content, Result.class,
+					"registro", device);
+			return Long.valueOf(result.getResult());
+		} catch(HttpClientErrorException e) {
+			return null;
+		}
+	}
 }

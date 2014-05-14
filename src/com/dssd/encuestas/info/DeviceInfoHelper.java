@@ -30,10 +30,6 @@ public class DeviceInfoHelper {
 		public static final DeviceInfoHelper INSTANCE = new DeviceInfoHelper();
 	}
 	
-	public static DeviceInfoHelper getInstance() {
-		return DeviceInfoHelperHolder.INSTANCE;
-	}
-    
     public static DeviceInfoHelper getInstance(Context context) {
     	synchronized (DeviceInfoHelperHolder.INSTANCE) {
 			if(DeviceInfoHelper.context == null)

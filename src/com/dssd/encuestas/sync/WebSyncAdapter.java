@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.dssd.encuestas.datos.AppConfig;
+import com.dssd.encuestas.info.DeviceInfoHelper;
 import com.dssd.encuestas.webservices.EncuestaItem;
 import com.dssd.encuestas.webservices.EncuestasResult;
 import com.dssd.encuestas.webservices.PreguntaItem;
@@ -70,6 +71,14 @@ public class WebSyncAdapter extends AbstractThreadedSyncAdapter {
 			
 			// Sincronizo los assets (imagenes) de las encuestas (logo)
 			EncuestasSyncHelper.sincronizarAssetsEncuestas(getContext());
+			
+			// Guardo registro
+			float batteryLevel = DeviceInfoHelper.getInstance(getContext()).getBatteryLevel();
+			EncuestasSyncHelper.registroHeartbeat(device, String.format("%2.2f%%", batteryLevel*100), null);
+			
+			if(batteryLevel < 0.3f) {
+				EncuestasSyncHelper.registroBajaBateria(device, String.format("%2.2f%%", batteryLevel*100), null);
+			}
 		}
 		Log.i("WebSyncAdapter", "onPerformSync: sync ended");
 		
