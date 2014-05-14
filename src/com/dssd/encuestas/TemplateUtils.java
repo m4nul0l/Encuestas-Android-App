@@ -283,6 +283,9 @@ public class TemplateUtils {
 	}
 	
 	public static Point calculateSizeFromScreenWidthPercentage(Context context, int width, int height, float widthPerc) {
+		if(width == 0)
+			return new Point(width, height);
+		
 		Point size = TemplateUtils.getScreenPercentage(context, widthPerc, -1);
 		int newWidth = size.x;
 		int newHeight = size.x * height / width;
