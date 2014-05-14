@@ -10,7 +10,10 @@ import org.xmlpull.v1.XmlSerializer;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Point;
+import android.os.BatteryManager;
 import android.util.Xml;
 import android.view.Display;
 import android.view.Surface;
@@ -18,15 +21,25 @@ import android.view.WindowManager;
 
 public class DeviceInfoHelper {
 	
-    private static final DeviceInfoHelper instance = new DeviceInfoHelper();
     private static Context context;
     
+    private DeviceInfoHelper() {
+	}
+    
+	private static class DeviceInfoHelperHolder {
+		public static final DeviceInfoHelper INSTANCE = new DeviceInfoHelper();
+	}
+	
+	public static DeviceInfoHelper getInstance() {
+		return DeviceInfoHelperHolder.INSTANCE;
+	}
+    
     public static DeviceInfoHelper getInstance(Context context) {
-    	synchronized (instance) {
+    	synchronized (DeviceInfoHelperHolder.INSTANCE) {
 			if(DeviceInfoHelper.context == null)
 				DeviceInfoHelper.context = context.getApplicationContext();
 		}
-    	return instance;
+    	return DeviceInfoHelperHolder.INSTANCE;
     }
     
     public String getDeviceInfoXML() {
@@ -173,5 +186,16 @@ public class DeviceInfoHelper {
 		Point size = new Point();
 		display.getRealSize(size);
     	return size;
+    }
+    
+    public float getBatteryLevel() {
+    	IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+    	Intent batteryStatus = context.registerReceiver(null, ifilter);
+    	
+    	int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+    	int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+    	float batteryPct = level / (float)scale;
+    	return batteryPct;
     }
 }
