@@ -85,7 +85,8 @@ public class LoginActivity extends Activity {
 				}
 			}
 		};
-		tarea.execute(et.getText().toString(), info);
+		//tarea.execute(et.getText().toString(), info);
+		CollapsingStatusBarActivity.executeAsyncTask(tarea, et.getText().toString(), info);
 		
 		//startActivity(new Intent(this, MainActivity.class));
 		//finish();

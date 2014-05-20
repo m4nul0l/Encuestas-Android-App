@@ -8,7 +8,9 @@ import com.dssd.encuestas.datos.Pregunta;
 import com.dssd.encuestas.sync.WebSyncHelper;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -107,10 +109,11 @@ public class PreguntasActivity extends CollapsingStatusBarActivity {
 		};
 	};
 	TimerReinicio timer;
+	@SuppressLint("NewApi")
 	protected void startTimer() {
 		if(tiempoReinicio > 0) {
 			timer = new TimerReinicio();
-			timer.execute(tiempoReinicio);
+			executeAsyncTask(timer, tiempoReinicio);
 		}
 	}
 	protected void stopTimer() {
