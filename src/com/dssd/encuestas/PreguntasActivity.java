@@ -8,7 +8,6 @@ import com.dssd.encuestas.datos.Pregunta;
 import com.dssd.encuestas.sync.WebSyncHelper;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
