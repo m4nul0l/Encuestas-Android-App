@@ -6,6 +6,7 @@ import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.sync.WebSyncHelper;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,6 +50,28 @@ public class FinActivity extends CollapsingStatusBarActivity {
 					findViewById(R.id.ImageButtonTerminar).setVisibility(View.GONE);
 				}
 				guardar();
+				
+				/* cierro automaticamente la pantalla después de un tiempo */
+				Integer reinicio = encuesta.getTiempoReinicioInteger();
+				if(reinicio > 0) {
+					AsyncTask<Integer, Void, Void> at = new AsyncTask<Integer, Void, Void>() {
+						@Override
+						protected Void doInBackground(Integer... params) {
+							try {
+								Thread.sleep(params[0] * 1000);
+							} catch (InterruptedException e) {
+								//
+							}
+							return null;
+						}
+						
+						protected void onCancelled(Void result) {}
+						protected void onPostExecute(Void result) {
+							finish();
+						}
+					};
+					at.execute(reinicio);
+				}
 			}
 		}
 		
