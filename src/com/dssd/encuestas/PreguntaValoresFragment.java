@@ -37,9 +37,9 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	
 	int selectedButton = -1;
 	
-	boolean botonSiguiente = true;
+	boolean botonSiguiente = false;
 	boolean mostrarLogoLoyalMaker = true;
-	boolean invertirOrdenRespuestas = false;
+	boolean invertirOrdenRespuestas = true;
 	
 	public PreguntaValoresFragment() {
 	}
