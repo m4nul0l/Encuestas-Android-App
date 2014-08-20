@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -208,6 +209,7 @@ public class MainActivity extends CollapsingStatusBarActivity {
 	@Override
 	public void onBackPressed() {
 		final EditText et = new EditText(this);
+		et.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
 		final String device = AppConfig.getInstance(this).getDevice();
 		//final String password = new StringBuilder(device).reverse().toString();
 		final String password = device;
@@ -223,6 +225,7 @@ public class MainActivity extends CollapsingStatusBarActivity {
 			    		   i.addCategory(Intent.CATEGORY_HOME);
 			    		   i.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 			    		   startActivity(Intent.createChooser(i, getResources().getString(R.string.seleccione_launcher)));
+			    		   finish();
 		    		   } else {
 		    			   Toast.makeText(MainActivity.this, R.string.contrasena_incorrecta, Toast.LENGTH_SHORT).show();
 		    		   }
