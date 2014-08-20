@@ -25,6 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
+import com.bugsnag.android.Bugsnag;
 import com.dssd.encuestas.DBHelper;
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
@@ -235,6 +236,7 @@ public class EncuestasSyncHelper {
 					"encuestado", device);
 			return Long.valueOf(result.getResult());
 		} catch(HttpClientErrorException e) {
+			Bugsnag.notify(e);
 			return null;
 		}
 		//return Long.valueOf(result.getIdEncuestado());
@@ -298,6 +300,7 @@ public class EncuestasSyncHelper {
 			} catch (SQLException e) {
 				Log.e("EncuestasSyncHelper", "sincronizarRespuestas: " + e.getLocalizedMessage());
 				e.printStackTrace();
+				Bugsnag.notify(e);
 			}
 		}
 	}
@@ -328,6 +331,7 @@ public class EncuestasSyncHelper {
 					"registro", device);
 			return Long.valueOf(result.getResult());
 		} catch(HttpClientErrorException e) {
+			Bugsnag.notify(e);
 			return null;
 		}
 	}

@@ -8,6 +8,7 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
+import com.bugsnag.android.Bugsnag;
 import com.dssd.encuestas.DBHelper;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
@@ -35,6 +36,7 @@ public class EncuestaManager {
 		} catch (SQLException e) {
 			Log.e("EncuestaManager", "getElements: " + e.getLocalizedMessage());
 			e.printStackTrace();
+			Bugsnag.notify(e);
 			return new ArrayList<T>(0);
 		}
 	}
@@ -56,6 +58,7 @@ public class EncuestaManager {
 		} catch (SQLException e) {
 			Log.e("EncuestaManager", "refreshTipoPregunta: " + e.getLocalizedMessage());
 			e.printStackTrace();
+			Bugsnag.notify(e);
 			return null;
 		}
 	}
@@ -113,6 +116,7 @@ public class EncuestaManager {
 		} catch (SQLException ex) {
 			Log.e("EncuestaManager", "guardarRespuestas: " + ex.getLocalizedMessage());
 			ex.printStackTrace();
+			Bugsnag.notify(ex);
 		}
 		
 		close();
@@ -126,6 +130,7 @@ public class EncuestaManager {
 		} catch (SQLException e) {
 			Log.e("EncuestaManager", "getDao: " + e.getLocalizedMessage());
 			e.printStackTrace();
+			Bugsnag.notify(e);
 			return null;
 		}
 	}

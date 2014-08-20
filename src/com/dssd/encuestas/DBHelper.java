@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.bugsnag.android.Bugsnag;
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.Encuestado;
 import com.dssd.encuestas.datos.Pregunta;
@@ -58,6 +59,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Bugsnag.notify(e);
 		}
 	}
 

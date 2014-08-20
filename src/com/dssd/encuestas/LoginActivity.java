@@ -1,12 +1,13 @@
 package com.dssd.encuestas;
 
+import com.bugsnag.android.Bugsnag;
+import com.bugsnag.android.activity.BugsnagActivity;
 import com.dssd.encuestas.datos.AppConfig;
 import com.dssd.encuestas.info.DeviceInfoHelper;
 import com.dssd.encuestas.sync.EncuestasSyncHelper;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.Menu;
@@ -14,7 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends BugsnagActivity {
 	
 	ProgressDialog progressDialog;
 
@@ -53,9 +54,10 @@ public class LoginActivity extends Activity {
 					
 					res = EncuestasSyncHelper.sendInfoUser(params[0], params[1]);
 					if(res) {
-						publishProgress("Se invió la información del dispositivo");
+						publishProgress("Se envió la información del dispositivo");
 						
 						AppConfig.getInstance(LoginActivity.this).setDevice(params[0]);
+						Bugsnag.addToTab("Device", "id", params[0]);
 						
 						return "ok";
 					} else {

@@ -1,13 +1,14 @@
 package com.dssd.encuestas;
 
+import com.bugsnag.android.activity.BugsnagFragmentActivity;
+
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.WindowManager;
 
-public abstract class CollapsingStatusBarActivity extends FragmentActivity {
+public abstract class CollapsingStatusBarActivity extends BugsnagFragmentActivity {
 	
 	AsyncTask<Void, Void, Void> statusBarHiderAsyncTask;
 	
