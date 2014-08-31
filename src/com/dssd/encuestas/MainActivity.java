@@ -10,6 +10,7 @@ import com.dssd.encuestas.sync.WebSyncHelper;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -44,8 +45,7 @@ public class MainActivity extends CollapsingStatusBarActivity {
 	static final float IMAGEN_EMPRESA_WIDTH = 0.3f;
 	static final float IMAGEN_LOYALMAKER_WIDTH = 0.4f;
 	
-	boolean mostrarLogoLoyalMaker = true;
-	
+	@SuppressLint("InflateParams")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,7 +73,7 @@ public class MainActivity extends CollapsingStatusBarActivity {
 		TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewComenzar), 0.25f);
 		/*TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewEmpresa), 0.50f);*/
 		
-		if(mostrarLogoLoyalMaker) {
+		if(App.isMostrarLogoLoyalMaker()) {
 			TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), IMAGEN_LOYALMAKER_WIDTH);
 		} else {
 			findViewById(R.id.imageViewLogo).setVisibility(View.GONE);

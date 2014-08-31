@@ -26,8 +26,6 @@ public class PreguntasActivity extends CollapsingStatusBarActivity {
 	EncuestaManager encuestaManager;
 	int tiempoReinicio = 0;
 	
-	boolean guardarRespuestasParciales = true;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,7 +79,7 @@ public class PreguntasActivity extends CollapsingStatusBarActivity {
 	
 	public void cancelarEncuesta() {
 		// al cancelar, guardo las respuestas hasta el momento
-		if(respuestas[0] != null && guardarRespuestasParciales) {
+		if(respuestas[0] != null && App.isGuardarRespuestasParciales()) {
 			// solo guardo si al menos hay una respuesta
 			EncuestaManager em = new EncuestaManager(PreguntasActivity.this);
 			em.guardarRespuestas("", "", "", "", null, respuestas);

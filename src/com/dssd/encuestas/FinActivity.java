@@ -17,9 +17,7 @@ import android.graphics.Typeface;
 
 public class FinActivity extends CollapsingStatusBarActivity {
 	
-	boolean botonTerminar = true;
 	boolean guardado = false;
-	boolean mostrarLogoLoyalMaker = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +32,7 @@ public class FinActivity extends CollapsingStatusBarActivity {
 			
 			TemplateUtils.setTextColor((TextView)findViewById(R.id.textViewDespedida), encuesta);
 			
-			if(!botonTerminar) {
+			if(!App.isMostrarBotonTerminar()) {
 				encuesta.setDatos(false);
 				encuesta.setComentarios(false);
 			}
@@ -46,7 +44,7 @@ public class FinActivity extends CollapsingStatusBarActivity {
 			} else {
 				findViewById(R.id.entrevistadoDatos).setVisibility(View.GONE);
 				findViewById(R.id.entrevistadoComentarios).setVisibility(View.GONE);
-				if(!botonTerminar) {
+				if(!App.isMostrarBotonTerminar()) {
 					findViewById(R.id.ImageButtonTerminar).setVisibility(View.GONE);
 				}
 				guardar();
@@ -80,7 +78,7 @@ public class FinActivity extends CollapsingStatusBarActivity {
 		
 		TemplateUtils.setFontPercentage((TextView)findViewById(R.id.textViewDespedida), TemplateUtils.GLOBAL_TEXT_SIZE);
 		
-		if(mostrarLogoLoyalMaker) {
+		if(App.isMostrarLogoLoyalMaker()) {
 			TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), 0.2f);
 		} else {
 			findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
@@ -91,7 +89,7 @@ public class FinActivity extends CollapsingStatusBarActivity {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if(!botonTerminar) {
+		if(!App.isMostrarBotonTerminar()) {
 			if(event.getAction() == MotionEvent.ACTION_UP) {
 				finish();
 				return true;

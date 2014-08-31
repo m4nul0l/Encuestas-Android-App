@@ -37,10 +37,6 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 	
 	int selectedButton = -1;
 	
-	boolean botonSiguiente = false;
-	boolean mostrarLogoLoyalMaker = true;
-	boolean invertirOrdenRespuestas = true;
-	
 	public PreguntaValoresFragment() {
 	}
 	
@@ -52,7 +48,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		
 		TipoPreguntaOpcion[] opcionesArray = tipoPregunta.getOpcionesArray();
 		
-		if(invertirOrdenRespuestas) {
+		if(App.isInvertirOrdenRespuestas()) {
 			TipoPreguntaOpcion[] newArray = new TipoPreguntaOpcion[opcionesArray.length];
 			
 			for(int x=0, y=opcionesArray.length-1; x<opcionesArray.length; x++, y--) {
@@ -86,7 +82,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		TemplateUtils.setFontPercentage(tvPregunta, TemplateUtils.GLOBAL_TEXT_SIZE);
 		TemplateUtils.setTextColor(tvPregunta, getEncuesta());
 		
-		if(mostrarLogoLoyalMaker) {
+		if(App.isMostrarLogoLoyalMaker()) {
 			TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewLogo), 0.2f);
 		} else {
 			v.findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
@@ -94,7 +90,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 		
 		TemplateUtils.setLogoEmpresa(getActivity(), getEncuesta(), (ImageView)v.findViewById(R.id.imageViewEmpresa), 0.2f);
 		
-		if(botonSiguiente) {
+		if(App.isMostrarBotonSiguiente()) {
 			TemplateUtils.setWidthPercentage(v.findViewById(R.id.imageViewSiguiente), 0.144f);
 			v.findViewById(R.id.imageViewSiguiente).setOnClickListener(siguienteListener);
 		} else {
@@ -131,7 +127,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 					if(button == selected) {
 						selectedButton = i;
 					} else {
-						if(botonSiguiente) {
+						if(App.isMostrarBotonSiguiente()) {
 							button.getDrawable().setState(new int[]{android.R.attr.state_checked});
 						}
 					}
@@ -145,7 +141,7 @@ public class PreguntaValoresFragment extends PreguntaFragment {
 				
 				((PreguntasActivity)getActivity()).resetTimer();
 				
-				if(!botonSiguiente) {
+				if(!App.isMostrarBotonSiguiente()) {
 					responderPreguntaValores();
 				}
 			}
