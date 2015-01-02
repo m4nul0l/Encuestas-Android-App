@@ -36,6 +36,11 @@ public class EncuestasResult extends ItemsResult<EncuestaItem> {
 		cv.put("tiempoReinicio", item.tiempoReinicio);
 		cv.put("datos", (item.datos > 0));
 		cv.put("comentarios", (item.comentarios > 0));
+		cv.put("validacion", (item.validacion > 0));
+		cv.put("semaforo", (item.semaforo > 0));
+		cv.put("mensajeInhabilitada", item.mensajeInhabilitada);
+		cv.put("cantidadTiempo", item.cantidadTiempo);
+		cv.put("cantidadEncuestas", item.cantidadEncuestas);
 		return cv;
 	}
 }

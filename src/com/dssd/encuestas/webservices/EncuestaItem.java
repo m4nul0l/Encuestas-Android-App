@@ -43,4 +43,19 @@ public class EncuestaItem {
 	
 	@Element(required=false)
 	int comentarios;
+	
+	@Element(required=false)
+	int validacion;
+	
+	@Element(required=false)
+	int semaforo;
+	
+	@Element(required=false)
+	String mensajeInhabilitada;
+	
+	@Element(required=false)
+	String cantidadTiempo;
+	
+	@Element(required=false)
+	String cantidadEncuestas;
 }

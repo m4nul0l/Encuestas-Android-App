@@ -43,6 +43,21 @@ public class Encuesta {
 	@DatabaseField
 	boolean comentarios;
 	
+	@DatabaseField
+	boolean validacion;
+	
+	@DatabaseField
+	boolean semaforo;
+	
+	@DatabaseField
+	String mensajeInhabilitada;
+	
+	@DatabaseField
+	String cantidadTiempo;
+	
+	@DatabaseField
+	String cantidadEncuestas;
+	
 	
 	@ForeignCollectionField
 	ForeignCollection<Pregunta> preguntas;
@@ -51,6 +66,22 @@ public class Encuesta {
 		return _id;
 	}
 	
+	public boolean isValidacion() {
+		return validacion;
+	}
+
+	public void setValidacion(boolean validacion) {
+		this.validacion = validacion;
+	}
+
+	public boolean isSemaforo() {
+		return semaforo;
+	}
+
+	public void setSemaforo(boolean semaforo) {
+		this.semaforo = semaforo;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -120,4 +151,50 @@ public class Encuesta {
 	public boolean isComentarios() {
 		return comentarios;
 	}
+
+	public String getMensajeInhabilitada() {
+		return mensajeInhabilitada;
+	}
+
+	public void setMensajeInhabilitada(String mensajeInhabilitada) {
+		this.mensajeInhabilitada = mensajeInhabilitada;
+	}
+
+	public String getCantidadTiempo() {
+		return cantidadTiempo;
+	}
+	
+	public String getCantidadEncuestas() {
+		return cantidadEncuestas;
+	}
+	
+	public Integer getCantidadTiempoInteger() {
+		Integer res = null;
+		try {
+			res = Integer.parseInt(cantidadTiempo);
+		} catch(NumberFormatException e) {
+			return 0;
+		}
+		return res;
+	}
+	
+	public Integer getCantidadEncuestasInteger() {
+		Integer res = null;
+		try {
+			res = Integer.parseInt(cantidadEncuestas);
+		} catch(NumberFormatException e) {
+			return 0;
+		}
+		return res;
+	}
+
+	public void setCantidadTiempo(String cantidadTiempo) {
+		this.cantidadTiempo = cantidadTiempo;
+	}
+
+	public void setTiempoReinicio(String tiempoReinicio) {
+		this.tiempoReinicio = tiempoReinicio;
+	}
+	
+	
 }
