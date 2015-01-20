@@ -1,7 +1,9 @@
 package com.dssd.encuestas;
 
+import java.util.Date;
 import java.util.List;
 
+import com.dssd.encuestas.datos.AppConfig;
 import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 import com.dssd.encuestas.sync.WebSyncHelper;
@@ -49,7 +51,7 @@ public class FinActivity extends CollapsingStatusBarActivity {
 				}
 				guardar();
 				
-				/* cierro automaticamente la pantalla después de un tiempo */
+				/* cierro automaticamente la pantalla despuï¿½s de un tiempo */
 				Integer reinicio = encuesta.getTiempoReinicioInteger();
 				if(reinicio > 0) {
 					AsyncTask<Integer, Void, Void> at = new AsyncTask<Integer, Void, Void>() {
@@ -137,6 +139,15 @@ public class FinActivity extends CollapsingStatusBarActivity {
 			
 			EncuestaManager em = new EncuestaManager(this);
 			em.guardarRespuestas(nombre, email, telefono, comentarios, null, respuestas);
+			
+			List<Encuesta> list = em.getEncuestas();
+			if (list.size() > 0 && list.get(0).isValidacion()){
+				int cantidadEncuestas = AppConfig.getInstance(FinActivity.this).getTimeoutCantidadEncuestas() - 1;
+				AppConfig.getInstance(FinActivity.this).setTimeoutCantidadEncuestas(cantidadEncuestas);	
+				
+				AppConfig.getInstance(FinActivity.this).setTimeoutFecha(new Date());
+			}
+			
 			WebSyncHelper.getInstance().requestSync(this);
 		}
 		guardado = true;

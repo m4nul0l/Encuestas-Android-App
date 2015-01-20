@@ -152,6 +152,11 @@ public class MainActivity extends CollapsingStatusBarActivity {
 		List<Encuesta> list = encuestaManager.getEncuestas();
 		if(list.size() > 0) {
 			Encuesta encuesta = list.get(0);
+			
+			if (encuesta.isValidacion()) {
+				inicializarProcesoInhabilitacion(encuesta);	
+			}
+			
 			String mensajeBienvenida = encuesta.getMensajeBienvenida();
 			if(mensajeBienvenida != null && mensajeBienvenida.compareTo("") != 0) {
 				TextView tvb = (TextView) findViewById(R.id.textViewBienvenida);
@@ -173,6 +178,11 @@ public class MainActivity extends CollapsingStatusBarActivity {
 		}
 	}
 	
+	private void inicializarProcesoInhabilitacion(Encuesta encuesta) {
+		AppConfig.getInstance(MainActivity.this).setTimeout(encuesta.getCantidadTiempoInteger(), 
+				encuesta.getCantidadEncuestasInteger(), null);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
