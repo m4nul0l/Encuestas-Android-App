@@ -48,6 +48,16 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
+            android:name="com.dssd.encuestas.InhabilitarActivity"
+            android:label="@string/title_activity_inhabilitar"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="com.dssd.encuestas.ValidacionActivity"
+            android:label="@string/title_activity_validacion"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
             android:name="com.dssd.encuestas.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="landscape" >

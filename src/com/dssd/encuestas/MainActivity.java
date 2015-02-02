@@ -209,7 +209,7 @@ public class MainActivity extends CollapsingStatusBarActivity {
 		//Toast.makeText(this, "se presiono", Toast.LENGTH_SHORT).show();
 		
 		if(event.getAction() == MotionEvent.ACTION_UP) {
-			startActivity(new Intent(this, PreguntasActivity.class));
+			startActivity(new Intent(this, ValidacionActivity.class));
 			return true;
 		}
 		
