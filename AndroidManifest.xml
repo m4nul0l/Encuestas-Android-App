@@ -58,6 +58,11 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
+            android:name="com.dssd.encuestas.SemaforoActivity"
+            android:label="@string/title_activity_semaforo"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
             android:name="com.dssd.encuestas.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="landscape" >

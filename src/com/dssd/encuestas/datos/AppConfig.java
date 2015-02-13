@@ -25,29 +25,29 @@ public class AppConfig {
     private static final String TIMEOUT_CANTIDAD_TIEMPO = "cantidad_tiempo";
     private static final String TIMEOUT_FECHA = "fecha";
     
-    public String getDevice() {
+    public synchronized String getDevice() {
 		SharedPreferences prefs = context.getSharedPreferences("config", Context.MODE_PRIVATE);
 		return prefs.getString(DEVICE, null);
     }
     
-    public void setDevice(String device) {
+    public synchronized void setDevice(String device) {
 		SharedPreferences prefs = context.getSharedPreferences("config", Context.MODE_PRIVATE);
 		Editor editor = prefs.edit();
 		editor.putString(DEVICE, device);
 		editor.commit();
     }
     
-    public int getTimeoutCantidadEncuestas() {
+    public synchronized int getTimeoutCantidadEncuestas() {
 		SharedPreferences prefs = context.getSharedPreferences("timeout", Context.MODE_PRIVATE);
 		return prefs.getInt(TIMEOUT_CANTIDAD_ENCUESTAS, 0);
     }
     
-    public int getTimeoutCantidadEncuestasMax() {
+    public synchronized int getTimeoutCantidadEncuestasMax() {
 		SharedPreferences prefs = context.getSharedPreferences("timeout", Context.MODE_PRIVATE);
 		return prefs.getInt(TIMEOUT_CANTIDAD_ENCUESTAS_MAX, 0);
     }
         
-    public Date getTimeoutFecha() {
+    public synchronized Date getTimeoutFecha() {
 		SharedPreferences prefs = context.getSharedPreferences("timeout", Context.MODE_PRIVATE);
 		Date date = new Date();
 		long time = prefs.getLong(TIMEOUT_FECHA, 0);
@@ -58,12 +58,12 @@ public class AppConfig {
 		return null;
     }
     
-    public int getTimeoutCantidadTiempo() {
+    public synchronized int getTimeoutCantidadTiempo() {
 		SharedPreferences prefs = context.getSharedPreferences("timeout", Context.MODE_PRIVATE);
 		return prefs.getInt(TIMEOUT_CANTIDAD_TIEMPO, 0);
     }
     
-    public void setTimeout(int cantidadTiempo, int cantidadEncuestas, Date fechaInicio) {
+    public synchronized void setTimeout(int cantidadTiempo, int cantidadEncuestas, Date fechaInicio) {
 		SharedPreferences prefs = context.getSharedPreferences("timeout", Context.MODE_PRIVATE);
 		Editor editor = prefs.edit();
 		editor.putInt(TIMEOUT_CANTIDAD_ENCUESTAS, cantidadEncuestas);
@@ -74,13 +74,13 @@ public class AppConfig {
 		editor.commit();
     }
     
-    public void setTimeoutCantidadEncuestas(int cantidadEncuestas) {
+    public synchronized void setTimeoutCantidadEncuestas(int cantidadEncuestas) {
 		SharedPreferences prefs = context.getSharedPreferences("timeout", Context.MODE_PRIVATE);
 		Editor editor = prefs.edit();
 		editor.putInt(TIMEOUT_CANTIDAD_ENCUESTAS, cantidadEncuestas);
 		editor.commit();
     }
-    public void setTimeoutFecha(Date fecha) {
+    public synchronized void setTimeoutFecha(Date fecha) {
 		SharedPreferences prefs = context.getSharedPreferences("timeout", Context.MODE_PRIVATE);
 		Editor editor = prefs.edit();
 		editor.putLong(TIMEOUT_FECHA, fecha.getTime());

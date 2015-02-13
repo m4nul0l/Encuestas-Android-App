@@ -1,37 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@drawable/default_background"
+    tools:context=".MainActivity"
+    tools:ignore="NestedWeights" >
 
-<Button
-    android:id="@+id/opcionesButtonSi"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:height="@dimen/activity_opciones_button_height"
-    android:text="1"
-    android:textSize="@dimen/activity_text_size"
-    android:width="@dimen/activity_opciones_button_width" >
-</Button>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="horizontal" >
+        
+	    <ImageView
+	        android:id="@+id/imageViewSemaforoRojo"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:contentDescription="@string/semaforo_description"
+	        android:paddingTop="20dp"
+	        android:src="@drawable/rojo_inactivo" />
+	    
+	    <ImageView
+	        android:id="@+id/imageViewSemaforoAmarillo"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:contentDescription="@string/semaforo_description"
+	        android:paddingTop="20dp"
+	        android:src="@drawable/amarillo_inactivo" />
+	    
+	   	<ImageView
+	        android:id="@+id/imageViewSemaforoVerde"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:contentDescription="@string/semaforo_description"
+	        android:paddingTop="20dp"
+	        android:src="@drawable/verde_inactivo" />
+	   	
+	</LinearLayout>
+	
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
 
-<Button
-    android:id="@+id/opcionesButtonNo"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:height="@dimen/activity_opciones_button_height"
-    android:text="2"
-    android:textSize="@dimen/activity_text_size"
-    android:width="@dimen/activity_opciones_button_width" >
-</Button>
-<Button
-    android:id="@+id/id3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:height="@dimen/activity_opciones_button_height"
-    android:text="3"
-    android:textSize="@dimen/activity_text_size"
-    android:width="@dimen/activity_opciones_button_width" >
+        <TextView
+            android:id="@+id/semaforoDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/semaforo_description"
+            android:textColor="#FFFFFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" android:baselineAligned="false">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" >
+
+                <ImageView
+                    android:id="@+id/imageViewEmpresa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerInside"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" >
+
+                <ImageView
+                    android:id="@+id/imageViewLogo"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/loyalmaker_logo"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/logo_loyalmaker" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
     
-</Button>
-</LinearLayout>
+</RelativeLayout>

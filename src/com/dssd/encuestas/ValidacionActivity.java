@@ -21,10 +21,29 @@ public class ValidacionActivity extends CollapsingStatusBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(!validarEncuesta()){
+		encuestaManager = new EncuestaManager(this);
+		boolean validada = validarEncuesta();
+		boolean semaforo = showSemaforo();
+		if(!validada && !semaforo){
 			startActivity(new Intent(this, InhabilitarActivity.class));
 		}else{
-			startActivity(new Intent(this, PreguntasActivity.class));
+			Bundle localBundle = new Bundle();
+			
+			if (semaforo && !validada) {
+				// Mostrar semadoro en rojo
+				localBundle.putBoolean("semaforoRojo", true);
+				Intent semaforoActivity = new Intent(this, SemaforoActivity.class);
+				semaforoActivity.putExtras(localBundle);
+				startActivity(semaforoActivity);
+			} else if (semaforo && validada) {
+				// Mostrar semadoro en verde
+				localBundle.putBoolean("semaforoVerde", true);
+				Intent semaforoActivity = new Intent(this, SemaforoActivity.class);
+				semaforoActivity.putExtras(localBundle);
+				startActivity(semaforoActivity);
+			} else if (!semaforo && validada) {
+				startActivity(new Intent(this, PreguntasActivity.class));
+			}
 		}
 		finish();
 	}

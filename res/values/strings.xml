@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="comenzar_encuesta">Presione la pantalla para comenzar la encuesta</string>
+    <string name="semaforo_description">Semaforo</string>
     <string name="title_activity_preguntas">PreguntasActivity</string>
     <string name="cerrar_preguntas_esta_seguro">¿Está seguro que desea cancelar la encuesta?</string>
     <string name="si">Sí</string>
@@ -12,6 +13,7 @@
     <string name="title_activity_fin">FinActivity</string>
     <string name="title_activity_inhabilitar">InhablitarActivity</string>
     <string name="title_activity_validacion">ValidacionActivity</string>
+    <string name="title_activity_semaforo">SemaforoActivity</string>
     <string name="terminar_encuesta">Gracias por completar la encuesta.</string>
     <string name="force_sync">Forzar Sincronización</string>
     <string name="title_activity_login">Ingrese su dispositivo de LoyalMaker.com</string>
