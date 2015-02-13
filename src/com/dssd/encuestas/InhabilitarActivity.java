@@ -15,8 +15,6 @@ import android.graphics.Typeface;
 
 public class InhabilitarActivity extends CollapsingStatusBarActivity {
 	
-	boolean guardado = false;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

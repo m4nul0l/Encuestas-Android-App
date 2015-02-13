@@ -6,6 +6,7 @@ import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,8 +20,20 @@ public class SemaforoActivity extends CollapsingStatusBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.semaforo);
+		setContentView(R.layout.activity_semaforo);
 		encuestaManager = new EncuestaManager(this);
+		
+		List<Encuesta> list = encuestaManager.getEncuestas();
+		if(list.size() > 0) {
+			Encuesta encuesta = list.get(0);
+			TemplateUtils.setLogoEmpresa(this, encuesta, (ImageView)findViewById(R.id.imageViewEmpresa), 0.2f);
+		}
+		
+		if(App.isMostrarLogoLoyalMaker()) {
+			TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), 0.2f);
+		} else {
+			findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
+		}
 		
 		boolean semaforoRojo = getIntent().getBooleanExtra("semaforoRojo", false);
 		boolean semaforoVerde = getIntent().getBooleanExtra("semaforoVerde", false);
