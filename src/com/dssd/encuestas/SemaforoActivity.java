@@ -6,7 +6,6 @@ import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +16,9 @@ public class SemaforoActivity extends CollapsingStatusBarActivity {
 	
 	EncuestaManager encuestaManager;
 	
+	static final float IMAGEN_EMPRESA_WIDTH = 0.2f;
+	static final float IMAGEN_LOYALMAKER_WIDTH = 0.4f;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,11 +28,12 @@ public class SemaforoActivity extends CollapsingStatusBarActivity {
 		List<Encuesta> list = encuestaManager.getEncuestas();
 		if(list.size() > 0) {
 			Encuesta encuesta = list.get(0);
-			TemplateUtils.setLogoEmpresa(this, encuesta, (ImageView)findViewById(R.id.imageViewEmpresa), 0.2f);
+			TemplateUtils.setDefaultBackground(this, encuesta);
+			TemplateUtils.setLogoEmpresa(this, encuesta, (ImageView)findViewById(R.id.imageViewEmpresa), IMAGEN_EMPRESA_WIDTH);
 		}
 		
 		if(App.isMostrarLogoLoyalMaker()) {
-			TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), 0.2f);
+			TemplateUtils.setWidthPercentage(findViewById(R.id.imageViewLogo), IMAGEN_LOYALMAKER_WIDTH);
 		} else {
 			findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
 		}
