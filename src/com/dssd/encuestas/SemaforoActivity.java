@@ -78,8 +78,8 @@ public class SemaforoActivity extends CollapsingStatusBarActivity {
 			if (semaforoVerde && !semaforoRojo) {
 				startActivity(new Intent(this, PreguntasActivity.class));
 			}else if (!semaforoVerde && semaforoRojo) {
-				startActivity(new Intent(this, ValidacionActivity.class));
-				
+				// nada, o sea vuelve a la pantalla anterior
+				//startActivity(new Intent(this, ValidacionActivity.class));
 			}
 			finish();
 			return true;
