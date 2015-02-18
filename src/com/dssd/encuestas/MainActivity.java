@@ -179,8 +179,14 @@ public class MainActivity extends CollapsingStatusBarActivity {
 	}
 	
 	private void inicializarProcesoInhabilitacion(Encuesta encuesta) {
-		AppConfig.getInstance(MainActivity.this).setTimeout(encuesta.getCantidadTiempoInteger(), 
-				encuesta.getCantidadEncuestasInteger(), null);
+		/* sólo resetear los timeouts cuando cambian los valores (es decir cambian en la web y vuelven a sincronizar) */
+		AppConfig appConfig = AppConfig.getInstance(MainActivity.this);
+		if(appConfig.getTimeoutCantidadTiempo() != encuesta.getCantidadTiempoInteger() ||
+				appConfig.getTimeoutCantidadEncuestasMax() != encuesta.getCantidadEncuestasInteger()) {
+			
+			appConfig.setTimeout(encuesta.getCantidadTiempoInteger(),
+						encuesta.getCantidadEncuestasInteger(), null);
+		}
 	}
 
 	@Override
