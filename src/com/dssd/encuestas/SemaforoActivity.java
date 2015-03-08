@@ -6,6 +6,7 @@ import com.dssd.encuestas.datos.Encuesta;
 import com.dssd.encuestas.datos.EncuestaManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,8 @@ public class SemaforoActivity extends CollapsingStatusBarActivity {
 	
 	static final float IMAGEN_EMPRESA_WIDTH = 0.2f;
 	static final float IMAGEN_LOYALMAKER_WIDTH = 0.4f;
+	
+	static final float IMAGEN_OPCION_HEIGHT_GENERAL = 0.53f;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class SemaforoActivity extends CollapsingStatusBarActivity {
 			findViewById(R.id.imageViewLogo).setVisibility(View.GONE);
 		}
 		
+		initBotonesSemaforo();
+		
 		boolean semaforoRojo = getIntent().getBooleanExtra("semaforoRojo", false);
 		boolean semaforoVerde = getIntent().getBooleanExtra("semaforoVerde", false);
 		
@@ -57,6 +62,12 @@ public class SemaforoActivity extends CollapsingStatusBarActivity {
 			TextView textView = (TextView) findViewById(R.id.semaforoDescripcion);
 			textView.setText(getTextInhabilitada());
 		}
+	}
+	
+	private void initBotonesSemaforo() {
+		TemplateUtils.setHeightPercentage(findViewById(R.id.imageViewSemaforoVerde), IMAGEN_OPCION_HEIGHT_GENERAL);
+		TemplateUtils.setHeightPercentage(findViewById(R.id.imageViewSemaforoAmarillo), IMAGEN_OPCION_HEIGHT_GENERAL);
+		TemplateUtils.setHeightPercentage(findViewById(R.id.imageViewSemaforoRojo), IMAGEN_OPCION_HEIGHT_GENERAL);
 	}
 
 	private CharSequence getTextInhabilitada() {
